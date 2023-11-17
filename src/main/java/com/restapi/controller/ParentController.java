@@ -23,8 +23,6 @@ public class ParentController {
     @Autowired
     private ParentService parentService;
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<APIResponse> getDetails(@PathVariable Long id){
         Parent parent = parentService.findById(id);

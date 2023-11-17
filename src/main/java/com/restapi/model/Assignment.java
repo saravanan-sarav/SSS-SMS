@@ -13,10 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Assignment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100, updatable = false)
@@ -38,7 +37,7 @@ public class Assignment {
     private ClassRoom classRoom;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-    private AppUser teacherUser;
+    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
+    private AppUser teacherUserAssignment;
 
 }

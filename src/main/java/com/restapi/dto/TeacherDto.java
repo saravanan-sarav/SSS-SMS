@@ -7,6 +7,8 @@ import com.restapi.response.TeacherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class TeacherDto {
 
@@ -15,9 +17,9 @@ public class TeacherDto {
 
     public Teacher mapToTeacher(AppUser teacherAppUser, Address address, Subject subject, TeacherRequest teacherRequest) {
         Teacher teacher = new Teacher();
-        Teacher teacherFetch = teacherRepository.findByUserId(teacherAppUser.getId());
-        if(teacherFetch.getId()!=null){
-            teacher.setId(teacherFetch.getId());
+        Optional<Teacher> teacherFetch = teacherRepository.findByUserId(teacherAppUser.getId());
+        if(teacherFetch.get().getId()!=null){
+            teacher.setId(teacherFetch.get().getId());
         }
         teacher.setFirstName(teacherRequest.getFirstName());
         teacher.setLastname(teacherRequest.getLastname());
@@ -26,16 +28,16 @@ public class TeacherDto {
         teacher.setDateOfBirth(teacherRequest.getDateOfBirth());
         teacher.setAddress(address);
         teacher.setSubject(subject);
-        teacher.setAppUser(teacherAppUser);
+        teacher.setTeacherUser(teacherAppUser);
         return teacher;
     }
 
     public TeacherResponse mapToTeacherResponse(Teacher teacher) {
         TeacherResponse teacherResponse = new TeacherResponse();
 
-        teacherResponse.setTeacherId(teacher.getAppUser().getId());
+        teacherResponse.setTeacherId(teacher.getTeacherUser().getId());
         teacherResponse.setTeacherName(teacher.getFirstName());
-        teacherResponse.setTeacherUsername(teacher.getAppUser().getUsername());
+        teacherResponse.setTeacherUsername(teacher.getTeacherUser().getUsername());
         teacherResponse.setAddressId(teacher.getAddress().getId());
         return teacherResponse;
     }

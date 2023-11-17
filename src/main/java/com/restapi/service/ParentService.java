@@ -12,6 +12,8 @@ import com.restapi.response.ParentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ParentService {
 
@@ -20,6 +22,9 @@ public class ParentService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClassRoomRepository classRoomRepository;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -44,30 +49,37 @@ public class ParentService {
     @Autowired
     private AddressDto addressDto;
 
+    @Autowired
+    private ClassStandardRepository classStandardRepository;
+
 
     public Parent findById(Long id) {
-        Parent parent = parentRepository.findByUserId(id);
-        return parent;
+        Optional<Parent> parent = parentRepository.findByUserId(id);
+        return parent.get();
     }
 
     public ParentResponse create(ParentRequest parentRequest) {
         Role studentRole = roleRepository.findById(1)
                 .orElseThrow(()-> new ResourceNotFoundException("roleId","roleId",1));
+
         Role parentRole = roleRepository.findById(2)
                 .orElseThrow(()-> new ResourceNotFoundException("roleId","roleId",2));
 
-        StudentStatus studentStatus = studentStatusRepository.findById(1L)
+        StudentStatus studentStatus = studentStatusRepository.findById(1l)
                 .orElseThrow(()-> new ResourceNotFoundException("statusId","statusId",1));
+
+        ClassRoom classRoom = classRoomRepository.findById(parentRequest.getClassId())
+                .orElseThrow(()-> new ResourceNotFoundException("classId","classId",parentRequest.getClassId()));
 
         AppUser parentAppUser = userRepository.save(authDto.setParentAuth(parentRole,parentRequest));
 
         AppUser studentAppUser = userRepository.save(authDto.setStudentAuth(studentRole,parentRequest));
 
-        Student student = studentRepository.save(studentDto.setStudent(studentStatus,studentAppUser,parentRequest));
-
         Address parentAddress = addressRepository.save(addressDto.setParentAddress(parentRequest));
 
-        Parent parent = parentRepository.save(parentDto.setParent(parentAddress,parentAppUser,student,parentRequest));
+        Student student = studentRepository.save(studentDto.setStudentDetails(classRoom,studentStatus,studentAppUser,parentRequest));
+
+        Parent parent = parentRepository.save(parentDto.setParentDetails(parentAppUser,studentAppUser,parentAddress,parentRequest));
 
         ParentResponse parentResponse = parentDto.responseConversion(parent);
 

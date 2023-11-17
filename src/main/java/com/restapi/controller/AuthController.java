@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class  AuthController {
 
     @Autowired
     private APIResponse apiResponse;

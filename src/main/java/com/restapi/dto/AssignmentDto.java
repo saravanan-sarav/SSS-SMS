@@ -14,7 +14,7 @@ public class AssignmentDto {
         assignmentResponse.setDeadline(assignment.getDeadline());
         assignmentResponse.setCreatedDate(assignment.getCreatedDate());
         assignmentResponse.setDeadline(assignment.getDeadline());
-        assignmentResponse.setClassStandard(assignment.getClassRoom().getStandard());
+        assignmentResponse.setClassStandard(assignment.getClassRoom().getClassStandard().getStandard());
 
         return assignmentResponse;
     }

@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Subject {
 
     public static final String TAMIL = "TAMIL";
@@ -19,7 +18,7 @@ public class Subject {
     public static final String SCIENCE = "SCIENCE";
     public static final String SOCIAL = "SOCIAL";
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

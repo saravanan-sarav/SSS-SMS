@@ -19,6 +19,7 @@ public class ParentRequest {
     private String lastname;
     private LocalDate dateOfBirth;
     private String gender;
+    private Long classId;
     private String MotherName;
     private String motherPhoneNumber;
     private String motherOccupation;

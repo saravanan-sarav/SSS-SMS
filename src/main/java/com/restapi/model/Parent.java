@@ -14,10 +14,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Parent {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
@@ -45,13 +44,13 @@ public class Parent {
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    public AppUser appUser;
+    public AppUser parentUser;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @OneToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private AppUser studentUser;
+    @JoinColumn(name = "student_user_id", referencedColumnName = "id")
+    private AppUser studentUserForParent;
 }

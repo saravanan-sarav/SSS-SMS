@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -47,6 +48,9 @@ public class AdminService {
 
     @Autowired
     private ClassRoomRepository classRoomRepository;
+
+    @Autowired
+    private ClassStandardRepository classStandardRepository;
 
     @Autowired
     private AuthDto authDto;
@@ -103,12 +107,15 @@ public class AdminService {
     }
 
     public StudentApproveResponse approveStudent(StudentApproveRequest studentApproveRequest) {
-        Student student = studentRepository.findByUserId(studentApproveRequest.getStudentUserId());
+        Optional<Student> optionalStudent = studentRepository.findByUserId(studentApproveRequest.getStudentUserId());
+        Student student = optionalStudent.get();
+        ClassStandard classStandard = classStandardRepository.findById(studentApproveRequest.getClassId())
+                .orElseThrow(()-> new ResourceNotFoundException("stdId","stdId",2));
 
         StudentStatus studentStatus = studentStatusRepository.findById(studentApproveRequest.getStudentStatusId())
                 .orElseThrow(()-> new ResourceNotFoundException("statusId","statusId",studentApproveRequest.getStudentStatusId()));
 
-        ClassRoom classRoom = classRoomRepository.findById(studentApproveRequest.getClassId())
+        ClassRoom classRoom = classRoomRepository.findById(classStandard.getId())
                 .orElseThrow(()-> new ResourceNotFoundException("classId","classId",studentApproveRequest.getClassId()));
 
         student = studentDto.MapToApproveForStudent(student,studentStatus,classRoom);

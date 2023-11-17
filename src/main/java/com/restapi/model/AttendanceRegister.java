@@ -12,18 +12,17 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class AttendanceRegister {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
-    private AppUser studentUser;
+    @JoinColumn(name = "student_user_id", referencedColumnName = "id")
+    private AppUser studentUserAttendance;
 
     @ManyToOne
     @JoinColumn(name = "class_id", referencedColumnName = "id")

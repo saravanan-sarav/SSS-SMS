@@ -1,10 +1,7 @@
 package com.restapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,12 +9,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class AppUser {
 
     @Id
@@ -39,13 +37,36 @@ public class AppUser {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "parentUser")
     private Parent parent;
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "studentUser")
     private Student student;
 
-    @OneToOne(mappedBy = "appUser")
+    @OneToOne(mappedBy = "teacherUser")
     private Teacher teacher;
 
+    @OneToOne(mappedBy = "studentUserForParent")
+    private Parent parentStudentUserId;
+
+    @OneToMany(mappedBy = "tamilTeacherUser")
+    private List<ClassRoom> classRoomTamilTeacher;
+
+    @OneToMany(mappedBy = "englishTeacherUser")
+    private List<ClassRoom> classRoomEnglishTeacher;
+
+    @OneToMany(mappedBy = "mathsTeacherUser")
+    private List<ClassRoom> classRoomMathsTeacher;
+
+    @OneToMany(mappedBy = "scienceTeacherUser")
+    private List<ClassRoom> classRoomScienceTeacher;
+
+    @OneToMany(mappedBy = "socialTeacherUser")
+    private List<ClassRoom> classRoomSocialTeacher;
+
+    @OneToMany(mappedBy = "studentUserAttendance")
+    private List<AttendanceRegister> attendanceRegister = new ArrayList<>();
+
+    @OneToOne(mappedBy = "teacherUserClassRoom")
+    private ClassRoom classRoom;
 }

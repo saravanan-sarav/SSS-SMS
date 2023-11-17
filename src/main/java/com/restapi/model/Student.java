@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,22 +41,18 @@ public class Student {
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    public AppUser appUser;
-
-    @OneToOne(mappedBy = "studentUser")
-    private Parent parent;
+    public AppUser studentUser;
 
     @OneToOne
     @JoinColumn( name = "status_id", referencedColumnName = "id")
     private StudentStatus studentStatus;
 
-    @OneToMany(mappedBy = "studentUser")
-    private List<AttendanceRegister> attendanceRegister = new ArrayList<>();
-
     @OneToOne
-    @JoinColumn(name = "classroom_id", referencedColumnName = "id")
+    @JoinColumn(name = "class_Id", referencedColumnName = "id", nullable = true)
     private ClassRoom classRoom;
 
-    @OneToOne(mappedBy = "studentUser")
+
+    @OneToOne(mappedBy = "studentUserAssignmentGrade")
     private AssignmentGrade assignmentGrade;
+
 }

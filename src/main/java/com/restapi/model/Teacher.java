@@ -14,41 +14,37 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Teacher {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length =100)
-    @Size(min = 3, message = " First name should have at least 2 characters")
     private String firstName;
 
     @Column(nullable = false, length =100)
-    @Size(min = 3, message = " Last name should have at least 2 characters")
     private String lastname;
 
     @Column(nullable = false, length =100)
-    @Size(min = 10, message = " Phone number should contain 10 digits")
     private String phoneNumber;
 
     @Column(nullable = false, length =100)
-    @Size(min = 3, message = " Email should be in correct format")
     private String email;
 
     @Column(nullable = false, length =100)
-    @Size(min = 3, message = " Enter Valid Date of Birth")
     private LocalDate dateOfBirth;
 
 
     @CreationTimestamp
+
+
     @Column(updatable = false)
     private LocalDate dateOfJoin;
 
 
     @OneToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
-    public AppUser appUser;
+    public AppUser teacherUser;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -58,10 +54,8 @@ public class Teacher {
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
     private Subject subject;
 
-    @OneToOne(mappedBy = "teacherUser")
-    private ClassRoom classRoom;
 
-    @OneToMany(mappedBy = "teacherUser")
+    @OneToMany(mappedBy = "teacherUserAssignment")
     private List<Assignment> assignments;
 
 }

@@ -48,7 +48,7 @@ public class AssignmentService {
         }
         if(teacherUser!=null) {
             assignment.setAssignmentType(assignmentType);
-            assignment.setTeacherUser(teacherUser.get());
+            assignment.setTeacherUserAssignment(teacherUser.get());
             assignment.setDeadline(assignmentRequest.getDeadline());
             assignment.setTotalGrade(assignmentRequest.getTotalGrade());
         }
@@ -56,5 +56,10 @@ public class AssignmentService {
         AssignmentResponse assignmentResponse = assignmentDto.mapToAssignmentResponse(assignment);
 
         return  assignmentResponse;
+    }
+
+    public Assignment getAssignment(Long id) {
+     Assignment assignment = assignmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("assignmentId","assignmentId", id));
+     return assignment;
     }
 }

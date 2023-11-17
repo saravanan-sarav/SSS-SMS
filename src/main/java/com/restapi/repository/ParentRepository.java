@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, Long> {
-    @Query("select p from Parent p INNER JOIN p.appUser a WHERE a.id=?1")
-    Parent findByUserId(Long id);
+    @Query("select p from Parent p INNER JOIN p.parentUser a WHERE a.id=?1")
+    Optional<Parent> findByUserId(Long id);
 }

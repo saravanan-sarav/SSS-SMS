@@ -9,17 +9,16 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class AssignmentGrade {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer marksObtained = 0;
 
     @OneToOne
-    @JoinColumn(name = "student_id",referencedColumnName = "id")
-    private AppUser studentUser;
+    @JoinColumn(name = "student_user_id",referencedColumnName = "id")
+    private AppUser studentUserAssignmentGrade;
 
     @OneToOne
     @JoinColumn(name = "assessment_id", referencedColumnName = "id")

@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class AssignmentType {
 
     public static final String UNIT_TEST = "UNIT_TEST";
@@ -23,7 +22,7 @@ public class AssignmentType {
     public static final String CLASS_TEST = "CLASS_TEST";
     public static final String ASSIGNMENT = "ASSIGNMENT";
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)

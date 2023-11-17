@@ -17,10 +17,7 @@ public class TeacherService {
     private TeacherRepository teacherRepository;
 
     public Teacher findById(Long id) {
-        Teacher teacher = teacherRepository.findByUserId(id);
-        return teacher;
+        Optional<Teacher> teacher = teacherRepository.findByUserId(id);
+        return teacher.get();
     }
-
-
-
 }

@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StudentStatus {
 
     public static final String ACTIVE = "ACTIVE";
@@ -18,7 +17,7 @@ public class StudentStatus {
     public static final String PENDING = "PENDING";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
