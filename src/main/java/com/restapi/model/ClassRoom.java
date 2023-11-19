@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class ClassRoom {
     private ClassStandard classStandard;
 
     @OneToOne
-    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
+    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id",unique = true)
     private AppUser teacherUserClassRoom;
 
 
@@ -48,9 +49,12 @@ public class ClassRoom {
     private AppUser socialTeacherUser;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "classRoom")
     private List<Student> students = new ArrayList<>();
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "classRoom")
     private List<Assignment> assignments = new ArrayList<>();
 

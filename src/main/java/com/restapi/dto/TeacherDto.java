@@ -17,9 +17,11 @@ public class TeacherDto {
 
     public Teacher mapToTeacher(AppUser teacherAppUser, Address address, Subject subject, TeacherRequest teacherRequest) {
         Teacher teacher = new Teacher();
-        Optional<Teacher> teacherFetch = teacherRepository.findByUserId(teacherAppUser.getId());
-        if(teacherFetch.get().getId()!=null){
-            teacher.setId(teacherFetch.get().getId());
+        if(teacherRequest.getTeacherUserId()!=null){
+            Optional<Teacher> teacherFetch = teacherRepository.findByUserId(teacherAppUser.getId());
+            if(teacherFetch.get().getId()!=null){
+                teacher.setId(teacherFetch.get().getId());
+            }
         }
         teacher.setFirstName(teacherRequest.getFirstName());
         teacher.setLastname(teacherRequest.getLastname());

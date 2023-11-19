@@ -64,6 +64,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Role teacherRole = createRoleIfNotFound(Role.TEACHER);
         Role adminRole = createRoleIfNotFound(Role.ADMIN);
 
+//        Create Admin
+
+        AppUser adminUser = createUserIfNotFound("admin@123","admin",adminRole);
+
 //        Create Student Status
         StudentStatus studentStatusPending = createStudentStatusIfNotFound(StudentStatus.PENDING);
         StudentStatus studentStatusActive = createStudentStatusIfNotFound(StudentStatus.ACTIVE);
@@ -129,7 +133,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         AppUser studentAppUser = createUserIfNotFound("sarav@2001","2001",studentRole);
         AppUser parentAppUser = createUserIfNotFound("meena@2001","2001",parentRole);
         Address parentAddress = createAddressIfNotFound("45","Mahatma Street","Anna nagar","chennai","tamilNadu","600045");
-        Student student = createStudentIfNotFound("Saravanan","S","2001-10-04","Male",studentAppUser,classRoom,sixthClass,studentStatusActive);
+        Student student = createStudentIfNotFound("Saravanan","S","2001-10-04","Male",studentAppUser,classRoom,sixthClass,studentStatusPending);
         Parent parent = createParentIfNotFound("Meena S","8807456056","houseWife","Subramani G","9042241331","Labour","meena@gmail.com",parentAppUser,parentAddress,studentAppUser);
 
         alreadySetup = true;

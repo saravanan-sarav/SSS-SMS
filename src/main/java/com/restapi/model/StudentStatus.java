@@ -1,8 +1,10 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +25,7 @@ public class StudentStatus {
     @Column(nullable = false)
     private String status;
 
-    @OneToOne(mappedBy = "studentStatus")
-    private Student student;
+    @JsonIgnore
+    @OneToMany(mappedBy = "studentStatus")
+    private List<Student> students;
 }

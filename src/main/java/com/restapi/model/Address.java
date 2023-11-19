@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -40,9 +41,11 @@ public class Address {
     @Column(updatable = false)
     private LocalDateTime created_at;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     private Parent parent;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     private Teacher teacher;
 

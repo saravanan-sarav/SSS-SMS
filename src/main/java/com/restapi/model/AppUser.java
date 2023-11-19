@@ -25,6 +25,7 @@ public class AppUser {
     @Column(name = "username", unique = true, nullable = false, length = 100)
     private String username;
 
+    @JsonIgnore
     @Column(nullable = false, length = 100)
     private String password;
 
@@ -37,36 +38,47 @@ public class AppUser {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "parentUser")
     private Parent parent;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "studentUser")
     private Student student;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "teacherUser")
     private Teacher teacher;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "studentUserForParent")
     private Parent parentStudentUserId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tamilTeacherUser")
     private List<ClassRoom> classRoomTamilTeacher;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "englishTeacherUser")
     private List<ClassRoom> classRoomEnglishTeacher;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "mathsTeacherUser")
     private List<ClassRoom> classRoomMathsTeacher;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "scienceTeacherUser")
     private List<ClassRoom> classRoomScienceTeacher;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "socialTeacherUser")
     private List<ClassRoom> classRoomSocialTeacher;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "studentUserAttendance")
     private List<AttendanceRegister> attendanceRegister = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(mappedBy = "teacherUserClassRoom")
     private ClassRoom classRoom;
 }

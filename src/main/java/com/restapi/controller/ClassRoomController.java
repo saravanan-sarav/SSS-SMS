@@ -2,6 +2,7 @@ package com.restapi.controller;
 
 import com.restapi.model.ClassRoom;
 import com.restapi.model.Role;
+import com.restapi.model.Student;
 import com.restapi.request.ClassRoomRequest;
 import com.restapi.response.ClassRoomResponse;
 import com.restapi.response.common.APIResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/classroom")
@@ -35,6 +37,14 @@ public class ClassRoomController {
         ClassRoomResponse classRoomResponse = classRoomService.createClassRoom(classRoomRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(classRoomResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/{classId}/students")
+    public ResponseEntity<APIResponse> studentList(@PathVariable Long classId){
+        List<Student> students = classRoomService.studentFromClass(classId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(students);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

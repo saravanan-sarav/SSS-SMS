@@ -14,6 +14,7 @@ public class AddressDto {
             address.setId(parentRequest.getAddressId());
         }
         address.setDoorNum(parentRequest.getDoorNum());
+        address.setStreet(parentRequest.getStreet());
         address.setAddrLine(parentRequest.getAddrLine());
         address.setCity(parentRequest.getCity());
         address.setState(parentRequest.getState());

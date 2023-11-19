@@ -16,12 +16,14 @@ public class StudentDto {
     private StudentRepository studentRepository;
     public Student setStudentDetails(ClassRoom classRoom, StudentStatus studentStatus, AppUser studentAppUser, ParentRequest parentRequest) {
         Student student = new Student();
-        Optional<Student> studentFetch = studentRepository.findByUserId(studentAppUser.getId());
-        if(studentFetch.get().getId()!=null){
-            student.setId(studentFetch.get().getId());
+        if(parentRequest.getStudentUserId()!=null){
+            Optional<Student> studentFetch = studentRepository.findByUserId(parentRequest.getStudentUserId());
+            if(studentFetch.get().getId()!=null){
+                student.setId(studentFetch.get().getId());
+            }
         }
         student.setFirstName(parentRequest.getFirstName());
-        student.setLastname(parentRequest.getLastname());
+        student.setLastname(parentRequest.getLastName());
         student.setDateOfBirth(parentRequest.getDateOfBirth());
         student.setGender(parentRequest.getGender());
         student.setStudentStatus(studentStatus);

@@ -12,7 +12,6 @@ import lombok.Setter;
 public class ClassRoomRequest {
     private Long classRoomId;
     private Long standardId;
-    private String classStandard;
     private Long teacherUserId;
     private Long tamilTeacherUserId;
     private Long englishTeacherUserId;

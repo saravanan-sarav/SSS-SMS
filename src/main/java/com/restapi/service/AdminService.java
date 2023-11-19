@@ -89,39 +89,44 @@ public class AdminService {
 //        userid, addressid, subjectid
         Role teacherRole = roleRepository.findById(3)
                 .orElseThrow(() -> new ResourceNotFoundException("roleId", "roleId", 3));
-
-        AppUser teacherAppUser = authDto.setTeacherAuth(teacherRole, teacherRequest);
-        teacherAppUser = userRepository.save(teacherAppUser);
-
-        Address address = addressDto.setTeacherAddress(teacherRequest);
-        address = addressRepository.save(address);
+        System.out.println(teacherRequest.getDateOfBirth());
+        AppUser teacherAppUser = userRepository.save(authDto.setTeacherAuth(teacherRole, teacherRequest));
+        Address address = addressRepository.save(addressDto.setTeacherAddress(teacherRequest));
 
         Subject subject = subjectRepository.findById(teacherRequest.getSubjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("subjectId", "subjectId", teacherRequest.getSubjectId()));
 
-        Teacher teacher = teacherDto.mapToTeacher(teacherAppUser, address, subject, teacherRequest);
-        teacher = teacherRepository.save(teacher);
+        Teacher teacher = teacherRepository.save(teacherDto.mapToTeacher(teacherAppUser, address, subject, teacherRequest));
 
         TeacherResponse teacherResponse = teacherDto.mapToTeacherResponse(teacher);
         return teacherResponse;
     }
 
     public StudentApproveResponse approveStudent(StudentApproveRequest studentApproveRequest) {
-        Optional<Student> optionalStudent = studentRepository.findByUserId(studentApproveRequest.getStudentUserId());
+        System.out.println(studentApproveRequest.getStudentUserId());
+        Optional<Student> optionalStudent = studentRepository.findByUserIdForApprove(studentApproveRequest.getStudentUserId());
         Student student = optionalStudent.get();
         ClassStandard classStandard = classStandardRepository.findById(studentApproveRequest.getClassId())
-                .orElseThrow(()-> new ResourceNotFoundException("stdId","stdId",2));
+                .orElseThrow(() -> new ResourceNotFoundException("stdId", "stdId", 2));
 
         StudentStatus studentStatus = studentStatusRepository.findById(studentApproveRequest.getStudentStatusId())
-                .orElseThrow(()-> new ResourceNotFoundException("statusId","statusId",studentApproveRequest.getStudentStatusId()));
+                .orElseThrow(() -> new ResourceNotFoundException("statusId", "statusId", studentApproveRequest.getStudentStatusId()));
 
         ClassRoom classRoom = classRoomRepository.findById(classStandard.getId())
-                .orElseThrow(()-> new ResourceNotFoundException("classId","classId",studentApproveRequest.getClassId()));
+                .orElseThrow(() -> new ResourceNotFoundException("classId", "classId", studentApproveRequest.getClassId()));
 
-        student = studentDto.MapToApproveForStudent(student,studentStatus,classRoom);
+        student = studentDto.MapToApproveForStudent(student, studentStatus, classRoom);
         StudentApproveResponse studentApproveResponse = studentDto.mapToApproveResponse(student);
         return studentApproveResponse;
     }
 
 
+    public List<Student> getPendingApprovals() {
+        Optional<List<Student>> optionalStudents = studentRepository.findPendingStudents();
+        return optionalStudents.get();
+    }
+
+    public List<ClassRoom> getAllClassRooms() {
+        return classRoomRepository.findAll();
+    }
 }

@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Subject {
     @Column(nullable = false)
     private String subject;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "subject")
     private List<Teacher> teacher;
 }

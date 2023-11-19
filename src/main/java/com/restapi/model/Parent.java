@@ -1,6 +1,7 @@
 package com.restapi.model;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -42,15 +43,17 @@ public class Parent {
     @Column(updatable = false)
     private LocalDate dateOfJoin;
 
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id",unique = true)
     public AppUser parentUser;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "student_user_id", referencedColumnName = "id")
+    @JoinColumn(name = "student_user_id", referencedColumnName = "id",unique = true)
     private AppUser studentUserForParent;
 }

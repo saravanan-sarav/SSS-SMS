@@ -5,14 +5,15 @@ import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.AppUser;
 import com.restapi.model.ClassRoom;
 import com.restapi.model.ClassStandard;
-import com.restapi.repository.ClassRoomRepository;
-import com.restapi.repository.ClassStandardRepository;
-import com.restapi.repository.TeacherRepository;
-import com.restapi.repository.UserRepository;
+import com.restapi.model.Student;
+import com.restapi.repository.*;
 import com.restapi.request.ClassRoomRequest;
 import com.restapi.response.ClassRoomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClassRoomService {
@@ -29,7 +30,12 @@ public class ClassRoomService {
     private UserRepository userRepository;
 
     @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
     private ClassRoomDto classRoomDto;
+
+
 
 
     public ClassRoomResponse createClassRoom(ClassRoomRequest classRoomRequest) {
@@ -55,6 +61,7 @@ public class ClassRoomService {
                 .orElseThrow(()-> new ResourceNotFoundException("standardId","standardId",classRoomRequest.getStandardId()));
         ClassRoom classRoom = new ClassRoom();
         if(classRoomRequest.getClassRoomId()!=null){
+
             classRoom.setId(classRoomRequest.getClassRoomId());
         }
         classRoom.setClassStandard(classStandard);
@@ -64,7 +71,7 @@ public class ClassRoomService {
         classRoom.setMathsTeacherUser(mathsTeacherUser);
         classRoom.setScienceTeacherUser(scienceTeacherUser);
         classRoom.setSocialTeacherUser(socialTeacherUser);
-
+        classRoom = classRoomRepository.save(classRoom);
         return classRoomDto.mapToClassRoomResponse(classRoom);
     }
 
@@ -73,5 +80,10 @@ public class ClassRoomService {
                 .orElseThrow(()-> new ResourceNotFoundException("classId","classId",id));
 
         return classRoom;
+    }
+
+    public List<Student> studentFromClass(Long classId) {
+        Optional<List<Student>> students = studentRepository.findByClassRoom(classId);
+        return students.get();
     }
 }

@@ -51,6 +51,7 @@ public class AssignmentService {
             assignment.setTeacherUserAssignment(teacherUser.get());
             assignment.setDeadline(assignmentRequest.getDeadline());
             assignment.setTotalGrade(assignmentRequest.getTotalGrade());
+            assignment.setClassRoom(classRoom);
         }
         assignment = assignmentRepository.save(assignment);
         AssignmentResponse assignmentResponse = assignmentDto.mapToAssignmentResponse(assignment);

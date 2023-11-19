@@ -15,6 +15,9 @@ public class AssignmentDto {
         assignmentResponse.setCreatedDate(assignment.getCreatedDate());
         assignmentResponse.setDeadline(assignment.getDeadline());
         assignmentResponse.setClassStandard(assignment.getClassRoom().getClassStandard().getStandard());
+        assignmentResponse.setAssignmentTypeId(assignment.getAssignmentType().getId());
+        assignmentResponse.setTotalGrade(assignment.getTotalGrade());
+        assignmentResponse.setCreatedDate(assignment.getCreatedDate());
 
         return assignmentResponse;
     }

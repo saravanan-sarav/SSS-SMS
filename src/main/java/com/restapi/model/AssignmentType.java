@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class AssignmentType {
     @Size(min = 2, message = "assignment needed")
     private String type;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "assignmentType")
     private List<Assignment> assignment = new ArrayList<>();
 }

@@ -1,9 +1,6 @@
 package com.restapi.controller;
 
-import com.restapi.model.Assignment;
-import com.restapi.model.Parent;
-import com.restapi.model.Student;
-import com.restapi.model.Teacher;
+import com.restapi.model.*;
 import com.restapi.request.TeacherRequest;
 import com.restapi.request.admin.StudentApproveRequest;
 import com.restapi.response.TeacherResponse;
@@ -52,6 +49,16 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/classroom/all")
+    public ResponseEntity<APIResponse> getAllClassRoom(){
+        List<ClassRoom> classRooms = adminService.getAllClassRooms();
+
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(classRooms);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+
     @GetMapping("/parents/all")
     public ResponseEntity<APIResponse> getAllParents(){
         List<Parent> parents = adminService.getAllParents();
@@ -76,11 +83,19 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/enroll")
+    @PostMapping("/studentupdate")
     public ResponseEntity<APIResponse> approveStudent(@RequestBody StudentApproveRequest studentApproveRequest){
         StudentApproveResponse studentApproveResponse = adminService.approveStudent(studentApproveRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(studentApproveResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<APIResponse> pendingStudents(){
+        List<Student> students = adminService.getPendingApprovals();
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(students);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

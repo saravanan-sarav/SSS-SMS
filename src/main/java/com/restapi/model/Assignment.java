@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -39,5 +40,4 @@ public class Assignment {
     @ManyToOne
     @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
     private AppUser teacherUserAssignment;
-
 }

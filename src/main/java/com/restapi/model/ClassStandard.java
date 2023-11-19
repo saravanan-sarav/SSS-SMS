@@ -1,5 +1,6 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class ClassStandard {
     @Column(nullable = false)
     private String standard;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "classStandard")
     private ClassRoom classRoom;
 

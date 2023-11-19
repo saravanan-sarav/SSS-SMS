@@ -40,10 +40,10 @@ public class Student {
     private LocalDate dateOfJoin;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id",unique = true)
     public AppUser studentUser;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn( name = "status_id", referencedColumnName = "id")
     private StudentStatus studentStatus;
 

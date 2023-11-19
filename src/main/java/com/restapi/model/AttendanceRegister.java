@@ -1,6 +1,7 @@
 package com.restapi.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,7 +18,8 @@ public class AttendanceRegister {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,updatable = false)
+    @CreationTimestamp
     private LocalDate date;
 
     @ManyToOne
