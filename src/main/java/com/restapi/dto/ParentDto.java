@@ -3,9 +3,11 @@ package com.restapi.dto;
 import com.restapi.model.Address;
 import com.restapi.model.AppUser;
 import com.restapi.model.Parent;
+import com.restapi.model.Student;
 import com.restapi.repository.ParentRepository;
 import com.restapi.request.ParentRequest;
 import com.restapi.response.ParentResponse;
+import com.restapi.response.admin.AdminParentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,5 +53,21 @@ public class ParentDto {
         parentResponse.setAddressId(parent.getAddress().getId());
 
         return parentResponse;
+    }
+
+    public AdminParentResponse mapToAdminParentResponse(Parent parent, Student student) {
+        AdminParentResponse adminParentResponse = new AdminParentResponse();
+        adminParentResponse.setId(parent.getId());
+        adminParentResponse.setStudentId(parent.getStudentUserForParent().getId());
+        adminParentResponse.setStudentName(parent.getStudentUserForParent().getName());
+        adminParentResponse.setClassName(student.getClassRoom().getClassStandard().getStandard());
+        adminParentResponse.setParentId(parent.getParentUser().getId());
+        adminParentResponse.setMotherName(parent.getMotherName());
+        adminParentResponse.setFatherName(parent.getFatherName());
+        adminParentResponse.setPhoneNumber(parent.getFatherPhoneNumber());
+        adminParentResponse.setEmail(parent.getEmail());
+        adminParentResponse.setDateOfJoin(student.getDateOfJoin());
+        adminParentResponse.setStudentStatus(student.getStudentStatus().getStatus());
+        return adminParentResponse;
     }
 }

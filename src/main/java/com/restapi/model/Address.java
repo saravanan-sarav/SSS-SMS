@@ -1,6 +1,7 @@
 package com.restapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.models.auth.In;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,8 +35,8 @@ public class Address {
     @Column(nullable = false, length =100)
     private String state;
 
-    @Column(nullable = false, length =100)
-    private String pincode;
+    @Column(nullable = false)
+    private Long pincode;
 
     @CreationTimestamp
     @Column(updatable = false)

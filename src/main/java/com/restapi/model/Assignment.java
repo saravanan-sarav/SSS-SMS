@@ -27,17 +27,24 @@ public class Assignment {
     private LocalDate deadline;
 
     @Column(nullable = false)
-    private String totalGrade;
+    private Integer totalGrade;
+
+    @Column(nullable = false)
+    private Integer minScore;
 
     @ManyToOne
-    @JoinColumn(name = "ass_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "ass_type_id", referencedColumnName = "id",nullable = false)
     private AssignmentType assignmentType;
 
     @ManyToOne
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @JoinColumn(name = "class_id", referencedColumnName = "id",nullable = false)
     private ClassRoom classRoom;
 
     @ManyToOne
     @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
     private AppUser teacherUserAssignment;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id",referencedColumnName = "id",nullable = false)
+    private Subject subjectAssignment;
 }

@@ -22,6 +22,7 @@ public class AuthDto {
         AppUser appUser = new AppUser();
         appUser.setUsername(user.getUsername());
         appUser.setPassword(user.getPassword());
+        appUser.setName(user.getName());
         return appUser;
     }
 
@@ -30,6 +31,8 @@ public class AuthDto {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setId(appUser.getId());
         authResponse.setUsername(appUser.getUsername());
+        authResponse.setName(appUser.getName());
+        authResponse.setRole(appUser.getRoles().getName());
         return authResponse;
     }
 
@@ -41,6 +44,7 @@ public class AuthDto {
         }else {
             user.setUsername(parentRequest.getParentUsername());
             user.setPassword(parentRequest.getParentPassword());
+            user.setName(parentRequest.getFatherName());
             user.setRoles(parentRole);
             return user;
         }
@@ -55,6 +59,7 @@ public class AuthDto {
         else {
             user.setUsername(parentRequest.getStudentUsername());
             user.setPassword(parentRequest.getStudentPassword());
+            user.setName(parentRequest.getFirstName());
             user.setRoles(studentRole);
             return user;
         }
@@ -69,8 +74,7 @@ public class AuthDto {
             AppUser user = new AppUser();
             user.setUsername(teacherRequest.getTeacherUsername());
             user.setPassword(teacherRequest.getTeacherPassword());
-            System.out.println(teacherRequest.getTeacherPassword());
-            System.out.println(teacherRequest.getTeacherUsername());
+            user.setName(teacherRequest.getFirstName());
             user.setRoles(teacherRole);
             return user;
         }

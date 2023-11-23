@@ -1,19 +1,17 @@
 package com.restapi.service;
 
-import com.restapi.dto.AddressDto;
-import com.restapi.dto.AuthDto;
-import com.restapi.dto.StudentDto;
-import com.restapi.dto.TeacherDto;
+import com.restapi.dto.*;
 import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
 import com.restapi.request.TeacherRequest;
 import com.restapi.request.admin.StudentApproveRequest;
 import com.restapi.response.TeacherResponse;
-import com.restapi.response.admin.StudentApproveResponse;
+import com.restapi.response.admin.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +53,7 @@ public class AdminService {
     @Autowired
     private AuthDto authDto;
 
+
     @Autowired
     private AddressDto addressDto;
 
@@ -62,27 +61,63 @@ public class AdminService {
     private TeacherDto teacherDto;
 
     @Autowired
+    private ClassRoomDto classRoomDto;
+
+    @Autowired
     private StudentDto studentDto;
 
-    public List<Student> getAllStudents() {
+    @Autowired
+    private AssignmentDto assignmentDto;
+    @Autowired
+    private ParentDto parentDto;
+
+    public List<AdminStudentResponse> getAllStudents() {
         List<Student> students = studentRepository.findAll();
-        return students;
+
+        List<AdminStudentResponse> adminStudentResponseList = new ArrayList<>();
+        for (Student student : students) {
+            Parent parent = parentRepository.findByStudentUserId(student.getStudentUser().getId());
+            adminStudentResponseList.add(studentDto.mapToResponse(student, parent));
+        }
+        return adminStudentResponseList;
     }
 
-    public List<Teacher> getAllTeachers() {
+    public List<AdminTeacherResponse> getAllTeachers() {
         List<Teacher> teachers = teacherRepository.findAll();
-        return teachers;
+        List<AdminTeacherResponse> adminStudentResponseList = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            Subject subject = subjectRepository.findById(teacher.getSubject().getId()).get();
+            System.out.println("Teacher ID " + teacher.getTeacherUser().getId());
+            Optional<ClassRoom> classRoom = classRoomRepository.findByTeacherUserClassRoom(teacher.getTeacherUser().getId());
+            System.out.println("ClassRoom Detected");
+            if (classRoom.isPresent()) {
+                adminStudentResponseList.add(teacherDto.mapToAdminTeacherResponse(teacher, subject, classRoom.get()));
+            } else {
+                adminStudentResponseList.add(teacherDto.mapToAdminTeacherResponse(teacher, subject));
+            }
+        }
+        return adminStudentResponseList;
     }
 
-    public List<Parent> getAllParents() {
+    public List<AdminParentResponse> getAllParents() {
         List<Parent> parents = parentRepository.findAll();
-        return parents;
+        List<AdminParentResponse> adminParentResponseList = new ArrayList<>();
+        for (Parent parent : parents){
+            Student student = studentRepository.findByUserIdForApprove(parent.getStudentUserForParent().getId()).orElseThrow(()-> new ResourceNotFoundException("StudentId","StudentId",parent.getStudentUserForParent().getId()));
+            adminParentResponseList.add(parentDto.mapToAdminParentResponse(parent,student));
+        }
+        return adminParentResponseList;
     }
 
-    public List<Assignment> getAllAssignments() {
+    public List<AdminAssignmentResponse> getAllAssignments() {
         List<Assignment> assignments = assignmentRepository.findAll();
-        return assignments;
+        List<AdminAssignmentResponse> adminAssignmentResponseList = new ArrayList<>();
+        for (Assignment assignment : assignments) {
+            Optional<Teacher> optionalTeacher = teacherRepository.findByUserId(assignment.getTeacherUserAssignment().getId());
+            adminAssignmentResponseList.add(assignmentDto.mapToAdminAssignmentResponse(assignment, optionalTeacher.get()));
 
+        }
+        return adminAssignmentResponseList;
     }
 
     public TeacherResponse createTeacher(TeacherRequest teacherRequest) {
@@ -126,7 +161,19 @@ public class AdminService {
         return optionalStudents.get();
     }
 
-    public List<ClassRoom> getAllClassRooms() {
-        return classRoomRepository.findAll();
+    public List<AdminClassRoomResponse> getAllClassRooms() {
+        List<ClassRoom> classRoomList = classRoomRepository.findAll();
+        List<AdminClassRoomResponse> adminStudentResponseList = new ArrayList<>();
+        for (ClassRoom classRoom : classRoomList) {
+            Optional<Teacher> classTeacher = teacherRepository.findByUserId(classRoom.getTeacherUserClassRoom().getId());
+            Optional<Teacher> tamilTeacher = teacherRepository.findByUserId(classRoom.getTamilTeacherUser().getId());
+            Optional<Teacher> englishTeacher = teacherRepository.findByUserId(classRoom.getEnglishTeacherUser().getId());
+            Optional<Teacher> mathsTeacher = teacherRepository.findByUserId(classRoom.getMathsTeacherUser().getId());
+            Optional<Teacher> scienceTeacher = teacherRepository.findByUserId(classRoom.getScienceTeacherUser().getId());
+            Optional<Teacher> socialTeacher = teacherRepository.findByUserId(classRoom.getSocialTeacherUser().getId());
+            adminStudentResponseList.add(classRoomDto.mapToResponse
+                    (classRoom, classTeacher, tamilTeacher, englishTeacher, mathsTeacher, scienceTeacher, socialTeacher));
+        }
+        return adminStudentResponseList;
     }
 }

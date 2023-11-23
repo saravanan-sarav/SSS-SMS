@@ -28,4 +28,7 @@ public class Subject {
     @JsonIgnore
     @OneToMany(mappedBy = "subject")
     private List<Teacher> teacher;
+
+    @OneToMany(mappedBy = "subjectAssignment")
+    private List<Assignment> assignments;
 }

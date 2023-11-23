@@ -25,6 +25,9 @@ public class AppUser {
     @Column(name = "username", unique = true, nullable = false, length = 100)
     private String username;
 
+    @Column(nullable = false)
+    private String name;
+
     @JsonIgnore
     @Column(nullable = false, length = 100)
     private String password;

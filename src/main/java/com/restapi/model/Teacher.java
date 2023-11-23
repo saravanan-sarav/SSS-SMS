@@ -27,6 +27,9 @@ public class Teacher {
     private String lastname;
 
     @Column(nullable = false, length =100)
+    private String gender;
+
+    @Column(nullable = false, length =100)
     private String phoneNumber;
 
     @Column(nullable = false, length =100)
@@ -37,8 +40,6 @@ public class Teacher {
 
 
     @CreationTimestamp
-
-
     @Column(updatable = false)
     private LocalDate dateOfJoin;
 

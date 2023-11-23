@@ -32,7 +32,7 @@ public class ParentRequest {
     private String addrLine;
     private String city;
     private String state;
-    private String pincode;
+    private Long pincode;
     private String studentUsername;
     private String studentPassword;
     private String parentUsername;

@@ -2,17 +2,10 @@ package com.restapi.service;
 
 import com.restapi.dto.AssignmentDto;
 import com.restapi.exception.common.ResourceNotFoundException;
-import com.restapi.model.AppUser;
-import com.restapi.model.Assignment;
-import com.restapi.model.AssignmentType;
-import com.restapi.model.ClassRoom;
-import com.restapi.repository.AssignmentRepository;
-import com.restapi.repository.AssignmentTypeRepository;
-import com.restapi.repository.ClassRoomRepository;
-import com.restapi.repository.UserRepository;
+import com.restapi.model.*;
+import com.restapi.repository.*;
 import com.restapi.request.AssignmentRequest;
-import com.restapi.response.AssignmentResponse;
-import lombok.AllArgsConstructor;
+import com.restapi.response.admin.AdminAssignmentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +26,19 @@ public class AssignmentService {
     private UserRepository userRepository;
 
     @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired
     private AssignmentDto assignmentDto;
-    public AssignmentResponse createAssignment(AssignmentRequest assignmentRequest) {
+    public AdminAssignmentResponse
+    createAssignment(AssignmentRequest assignmentRequest) {
         AssignmentType assignmentType = assignmentTypeRepository.findById(assignmentRequest.getAssignmentTypeId())
                 .orElseThrow(()-> new ResourceNotFoundException("ass_type_Id","ass_type_Id",assignmentRequest.getAssignmentTypeId()));
 
         ClassRoom classRoom = classRoomRepository.findById(assignmentRequest.getClassId())
                 .orElseThrow(()-> new ResourceNotFoundException("classId","classId",assignmentRequest.getClassId()));
+
+        Subject subject = subjectRepository.findById(assignmentRequest.getSubjectId()).orElseThrow(()-> new ResourceNotFoundException("subjectId","SubjectId",assignmentRequest.getSubjectId()));
 
         Optional<AppUser> teacherUser = userRepository.findById(assignmentRequest.getTeacherUserId());
         Assignment assignment = new Assignment();
@@ -52,11 +51,13 @@ public class AssignmentService {
             assignment.setDeadline(assignmentRequest.getDeadline());
             assignment.setTotalGrade(assignmentRequest.getTotalGrade());
             assignment.setClassRoom(classRoom);
+            assignment.setSubjectAssignment(subject);
+            assignment.setMinScore(assignmentRequest.getMinScore());
         }
         assignment = assignmentRepository.save(assignment);
-        AssignmentResponse assignmentResponse = assignmentDto.mapToAssignmentResponse(assignment);
+        AdminAssignmentResponse adminAssignmentResponse = assignmentDto.mapToAssignmentResponse(assignment);
 
-        return  assignmentResponse;
+        return adminAssignmentResponse;
     }
 
     public Assignment getAssignment(Long id) {

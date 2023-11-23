@@ -15,4 +15,5 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, Long> {
 
     @Query("SELECT c FROM ClassRoom c INNER JOIN c.teacherUserClassRoom ct WHERE ct.id=?1")
     Optional<ClassRoom> findByTeacherUserClassRoom(Long id);
+
 }

@@ -24,7 +24,7 @@ public class ClassRoom {
     private ClassStandard classStandard;
 
     @OneToOne
-    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id",unique = true)
+    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
     private AppUser teacherUserClassRoom;
 
 

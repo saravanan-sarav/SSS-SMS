@@ -3,7 +3,7 @@ package com.restapi.controller;
 import com.restapi.model.Assignment;
 import com.restapi.model.Role;
 import com.restapi.request.AssignmentRequest;
-import com.restapi.response.AssignmentResponse;
+import com.restapi.response.admin.AdminAssignmentResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ public class AssignmentController {
 
     @PostMapping
     public ResponseEntity<APIResponse> postAssignment(@RequestBody AssignmentRequest assignmentRequest){
-        AssignmentResponse assignmentResponse = assignmentService.createAssignment(assignmentRequest);
-        apiResponse.setData(assignmentResponse);
+        AdminAssignmentResponse adminAssignmentResponse = assignmentService.createAssignment(assignmentRequest);
+        apiResponse.setData(adminAssignmentResponse);
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

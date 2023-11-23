@@ -15,8 +15,9 @@ public class AssignmentRequest {
     private Long teacherUserId;
     private Long assignmentId;
     private Long classId;
+    private Long subjectId;
     private Long assignmentTypeId;
     private LocalDate deadline;
-    private String totalGrade;
-
+    private Integer totalGrade;
+    private Integer minScore;
 }

@@ -3,6 +3,7 @@ package com.restapi.dto;
 import com.restapi.model.*;
 import com.restapi.repository.StudentRepository;
 import com.restapi.request.ParentRequest;
+import com.restapi.response.admin.AdminStudentResponse;
 import com.restapi.response.admin.StudentApproveResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,5 +49,21 @@ public class StudentDto {
         studentApproveResponse.setStudentClassId(student.getClassRoom().getId());
         studentApproveResponse.setStudentStatusId(student.getStudentStatus().getId());
         return studentApproveResponse;
+    }
+
+    public AdminStudentResponse mapToResponse(Student student, Parent parent) {
+        AdminStudentResponse adminStudentResponse = new AdminStudentResponse();
+        adminStudentResponse.setId(student.getId());
+        adminStudentResponse.setStudentUserId(student.getStudentUser().getId());
+        adminStudentResponse.setFirstName(student.getFirstName());
+        adminStudentResponse.setLastName(student.getLastname());
+        adminStudentResponse.setClassName(student.getClassRoom().getClassStandard().getStandard());
+        adminStudentResponse.setGender(student.getGender());
+        adminStudentResponse.setFatherName(parent.getFatherName());
+        adminStudentResponse.setMotherName(parent.getMotherName());
+        adminStudentResponse.setPhoneNumber(parent.getFatherPhoneNumber());
+        adminStudentResponse.setStudentStatusId(student.getStudentStatus().getId());
+        adminStudentResponse.setDateOfJoin(student.getDateOfJoin());
+        return adminStudentResponse;
     }
 }

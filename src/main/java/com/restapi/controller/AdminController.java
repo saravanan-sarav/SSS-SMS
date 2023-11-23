@@ -3,8 +3,8 @@ package com.restapi.controller;
 import com.restapi.model.*;
 import com.restapi.request.TeacherRequest;
 import com.restapi.request.admin.StudentApproveRequest;
+import com.restapi.response.admin.*;
 import com.restapi.response.TeacherResponse;
-import com.restapi.response.admin.StudentApproveResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.AdminService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@RolesAllowed(Role.ADMIN)
 public class AdminController {
     @Autowired
     private APIResponse apiResponse;
@@ -28,13 +29,9 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
-
-
     @GetMapping("/students/all")
     public ResponseEntity<APIResponse> getAllStudents(){
-        List<Student> students = adminService.getAllStudents();
-
+        List<AdminStudentResponse> students = adminService.getAllStudents();
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(students);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -42,7 +39,7 @@ public class AdminController {
 
     @GetMapping("/teachers/all")
     public ResponseEntity<APIResponse> getAllTeachers(){
-        List<Teacher> teachers = adminService.getAllTeachers();
+        List<AdminTeacherResponse> teachers = adminService.getAllTeachers();
 
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(teachers);
@@ -51,7 +48,7 @@ public class AdminController {
 
     @GetMapping("/classroom/all")
     public ResponseEntity<APIResponse> getAllClassRoom(){
-        List<ClassRoom> classRooms = adminService.getAllClassRooms();
+        List<AdminClassRoomResponse> classRooms = adminService.getAllClassRooms();
 
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(classRooms);
@@ -61,7 +58,7 @@ public class AdminController {
 
     @GetMapping("/parents/all")
     public ResponseEntity<APIResponse> getAllParents(){
-        List<Parent> parents = adminService.getAllParents();
+        List<AdminParentResponse> parents = adminService.getAllParents();
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(parents);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -69,7 +66,7 @@ public class AdminController {
 
     @GetMapping("/assignments/all")
     public ResponseEntity<APIResponse> getAllAssignments(){
-        List<Assignment> assignments = adminService.getAllAssignments();
+        List<AdminAssignmentResponse> assignments = adminService.getAllAssignments();
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(assignments);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     @Query("SELECT t FROM Teacher t INNER JOIN t.teacherUser a WHERE a.id=?1")
     Optional<Teacher> findByUserId(Long id);
+
 }
