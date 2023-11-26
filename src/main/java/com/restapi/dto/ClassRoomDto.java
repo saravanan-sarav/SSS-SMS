@@ -1,11 +1,9 @@
 package com.restapi.dto;
 
-import com.restapi.model.ClassRoom;
-import com.restapi.model.Parent;
-import com.restapi.model.Student;
-import com.restapi.model.Teacher;
+import com.restapi.model.*;
 import com.restapi.response.ClassRoomResponse;
 import com.restapi.response.admin.AdminClassRoomResponse;
+import com.restapi.response.classroom.ClassStandardResponse;
 import com.restapi.response.teacher.TeacherClassRoomResponse;
 import org.springframework.stereotype.Component;
 
@@ -65,5 +63,9 @@ public class ClassRoomDto {
         teacherClassRoomResponse.setDateOfBirth(student.getDateOfBirth());
         teacherClassRoomResponse.setDateOfJoin(student.getDateOfJoin());
         return teacherClassRoomResponse;
+    }
+
+    public ClassStandardResponse mapToStandard(ClassStandard classStandards) {
+        return new ClassStandardResponse(classStandards.getId(), classStandards.getStandard());
     }
 }

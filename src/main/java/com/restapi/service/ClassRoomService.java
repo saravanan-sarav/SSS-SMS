@@ -9,9 +9,11 @@ import com.restapi.model.Student;
 import com.restapi.repository.*;
 import com.restapi.request.ClassRoomRequest;
 import com.restapi.response.ClassRoomResponse;
+import com.restapi.response.classroom.ClassStandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,31 +38,29 @@ public class ClassRoomService {
     private ClassRoomDto classRoomDto;
 
 
-
-
     public ClassRoomResponse createClassRoom(ClassRoomRequest classRoomRequest) {
         AppUser classTeacherUser = userRepository.findById(classRoomRequest.getTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getTeacherUserId()));
 //        Teacher classTeacher = teacherRepository.findByUserId(classRoomRequest.getTeacherUserId());
 
         AppUser tamilTeacherUser = userRepository.findById(classRoomRequest.getTamilTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getTamilTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getTamilTeacherUserId()));
 
         AppUser englishTeacherUser = userRepository.findById(classRoomRequest.getEnglishTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getEnglishTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getEnglishTeacherUserId()));
 
         AppUser mathsTeacherUser = userRepository.findById(classRoomRequest.getMathsTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getMathsTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getMathsTeacherUserId()));
 
         AppUser scienceTeacherUser = userRepository.findById(classRoomRequest.getScienceTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getScienceTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getScienceTeacherUserId()));
 
         AppUser socialTeacherUser = userRepository.findById(classRoomRequest.getSocialTeacherUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("teacherId","teacherId", classRoomRequest.getSocialTeacherUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("teacherId", "teacherId", classRoomRequest.getSocialTeacherUserId()));
         ClassStandard classStandard = classStandardRepository.findById(classRoomRequest.getStandardId())
-                .orElseThrow(()-> new ResourceNotFoundException("standardId","standardId",classRoomRequest.getStandardId()));
+                .orElseThrow(() -> new ResourceNotFoundException("standardId", "standardId", classRoomRequest.getStandardId()));
         ClassRoom classRoom = new ClassRoom();
-        if(classRoomRequest.getClassRoomId()!=null){
+        if (classRoomRequest.getClassRoomId() != null) {
 
             classRoom.setId(classRoomRequest.getClassRoomId());
         }
@@ -77,7 +77,7 @@ public class ClassRoomService {
 
     public ClassRoom findById(Long id) {
         ClassRoom classRoom = classRoomRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("classId","classId",id));
+                .orElseThrow(() -> new ResourceNotFoundException("classId", "classId", id));
 
         return classRoom;
     }
@@ -85,5 +85,14 @@ public class ClassRoomService {
     public List<Student> studentFromClass(Long classId) {
         Optional<List<Student>> students = studentRepository.findByClassRoom(classId);
         return students.get();
+    }
+
+    public List<ClassStandardResponse> standardList() {
+        List<ClassStandard> classStandards = classStandardRepository.findAll();
+        List<ClassStandardResponse> classStandardResponseList = new ArrayList<>();
+        for (ClassStandard classStandard : classStandards) {
+            classStandardResponseList.add(classRoomDto.mapToStandard(classStandard));
+        }
+        return classStandardResponseList;
     }
 }

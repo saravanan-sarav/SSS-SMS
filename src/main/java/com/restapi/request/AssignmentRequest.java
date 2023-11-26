@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Getter
@@ -20,4 +18,6 @@ public class AssignmentRequest {
     private LocalDate deadline;
     private Integer totalGrade;
     private Integer minScore;
+    private String comments;
 }
+

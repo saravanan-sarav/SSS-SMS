@@ -5,9 +5,13 @@ import com.restapi.repository.StudentRepository;
 import com.restapi.request.ParentRequest;
 import com.restapi.response.admin.AdminStudentResponse;
 import com.restapi.response.admin.StudentApproveResponse;
+import com.restapi.response.student.StudentAttendanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -65,5 +69,20 @@ public class StudentDto {
         adminStudentResponse.setStudentStatusId(student.getStudentStatus().getId());
         adminStudentResponse.setDateOfJoin(student.getDateOfJoin());
         return adminStudentResponse;
+    }
+
+    public StudentAttendanceResponse mapToStudentAttendanceResponse(List<AttendanceRegister> attendanceRegister, Long userId) {
+        StudentAttendanceResponse studentAttendanceResponse = new StudentAttendanceResponse();
+        Optional<Student> student = studentRepository.findByUserId(userId);
+        if(student.isPresent()){
+            studentAttendanceResponse.setJoinedDate(student.get().getDateOfJoin());
+            List<LocalDate> attendance = new ArrayList<>();
+            for (AttendanceRegister attendanceRegisters  :attendanceRegister){
+                attendance.add(attendanceRegisters.getDate());
+            }
+            studentAttendanceResponse.setDate(attendance);
+            return studentAttendanceResponse;
+        }
+        return null;
     }
 }

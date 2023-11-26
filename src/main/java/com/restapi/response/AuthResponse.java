@@ -10,4 +10,9 @@ public class AuthResponse {
     private String username;
     private String name;
     private String role;
+    private Long teacherClassId;
+    private Long subjectId;
+    private Long studentId;
+    private Long studentClassId;
+    private Long parentId;
 }

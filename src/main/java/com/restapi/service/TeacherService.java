@@ -1,13 +1,12 @@
 package com.restapi.service;
 
+import com.restapi.dto.AssignmentDto;
 import com.restapi.dto.ClassRoomDto;
 import com.restapi.dto.TeacherDto;
 import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
-import com.restapi.response.teacher.TeacherAssignmentResponse;
-import com.restapi.response.teacher.TeacherClassRoomResponse;
-import com.restapi.response.teacher.TeacherProfileResponse;
+import com.restapi.response.teacher.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +39,8 @@ public class TeacherService {
 
     @Autowired
     private ClassRoomDto classRoomDto;
+    @Autowired
+    private AssignmentDto assignmentDto;
 
     public TeacherProfileResponse findById(Long id) {
         Optional<Teacher> teacher = teacherRepository.findByUserId(id);
@@ -57,7 +58,7 @@ public class TeacherService {
                 for (Student student : students.get()) {
                     System.out.println(student.getFirstName());
                     Parent parent = parentRepository.findByStudentUserId(student.getStudentUser().getId());
-                    teacherClassRoomResponseList.add(classRoomDto.mapToTeacherClassRoomResponse(parent,classRoom.get(),student));
+                    teacherClassRoomResponseList.add(classRoomDto.mapToTeacherClassRoomResponse(parent, classRoom.get(), student));
                 }
             }
         }
@@ -73,5 +74,19 @@ public class TeacherService {
             }
         }
         return teacherAssignmentResponseList;
+    }
+
+    public TeacherAssignmentLoaderResponse getAssignmentById(Long assignmentId) {
+        Optional<Assignment> optionalAssignment = assignmentRepository.findById(assignmentId);
+        if (optionalAssignment.isPresent()) {
+            TeacherAssignmentLoaderResponse teacherAssignmentLoaderResponse = assignmentDto.maptToTeacherAssignmentLoaderResponse(optionalAssignment.get());
+            return teacherAssignmentLoaderResponse;
+        }
+        return null;
+    }
+
+    public List<TeacherStudentListForAssignment> getStudentListBasedOnAssignment(Long assignmentId) {
+
+        return null;
     }
 }

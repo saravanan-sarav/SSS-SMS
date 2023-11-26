@@ -1,9 +1,7 @@
 package com.restapi.dto;
 
-import com.restapi.model.AppUser;
-import com.restapi.model.Role;
-import com.restapi.model.Teacher;
-import com.restapi.repository.UserRepository;
+import com.restapi.model.*;
+import com.restapi.repository.*;
 import com.restapi.request.ParentRequest;
 import com.restapi.request.RegisterRequest;
 import com.restapi.request.TeacherRequest;
@@ -17,6 +15,14 @@ import java.util.Optional;
 public class AuthDto {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private ParentRepository parentRepository;
+    @Autowired
+    private ClassRoomRepository classRoomRepository;
 
     public AppUser mapToAppUser(RegisterRequest user) {
         AppUser appUser = new AppUser();
@@ -28,11 +34,42 @@ public class AuthDto {
 
 
     public AuthResponse mapToAuthResponse(AppUser appUser) {
+        System.out.println(appUser.getRoles().getName());
         AuthResponse authResponse = new AuthResponse();
-        authResponse.setId(appUser.getId());
-        authResponse.setUsername(appUser.getUsername());
-        authResponse.setName(appUser.getName());
-        authResponse.setRole(appUser.getRoles().getName());
+        if(appUser.getRoles().getName().equals(Role.ADMIN)){
+            authResponse.setId(appUser.getId());
+            authResponse.setUsername(appUser.getUsername());
+            authResponse.setName(appUser.getName());
+            authResponse.setRole(appUser.getRoles().getName());
+        }else if (appUser.getRoles().getName().equals(Role.TEACHER)){
+            Optional<ClassRoom> classRoom = classRoomRepository.findByTeacherUserClassRoom(appUser.getId());
+            Optional<Teacher> teacher = teacherRepository.findByUserId(appUser.getId());
+            authResponse.setId(appUser.getId());
+            authResponse.setUsername(appUser.getUsername());
+            authResponse.setName(appUser.getName());
+            authResponse.setRole(appUser.getRoles().getName());
+            if(classRoom.isPresent()){
+                authResponse.setTeacherClassId(classRoom.get().getId());
+            }
+            authResponse.setSubjectId(teacher.get().getSubject().getId());
+        }else if (appUser.getRoles().getName().equals(Role.STUDENT)){
+            System.out.println("Came Student");
+            Parent parent = parentRepository.findByStudentUserId(appUser.getId());
+            authResponse.setId(appUser.getId());
+            authResponse.setUsername(appUser.getUsername());
+            authResponse.setName(appUser.getName());
+            authResponse.setRole(appUser.getRoles().getName());
+            authResponse.setParentId(parent.getParentUser().getId());
+        }else if (appUser.getRoles().getName().equals(Role.PARENT)){
+            Optional<Parent> parent = parentRepository.findByUserId(appUser.getId());
+            if(parent.isPresent()){
+                authResponse.setStudentId(parent.get().getStudentUserForParent().getId());
+            }
+            authResponse.setId(appUser.getId());
+            authResponse.setUsername(appUser.getUsername());
+            authResponse.setName(appUser.getName());
+            authResponse.setRole(appUser.getRoles().getName());
+        }
         return authResponse;
     }
 

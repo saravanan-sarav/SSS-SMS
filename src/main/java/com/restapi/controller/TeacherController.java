@@ -4,9 +4,7 @@ import com.restapi.model.Assignment;
 import com.restapi.model.Student;
 import com.restapi.model.Teacher;
 import com.restapi.response.common.APIResponse;
-import com.restapi.response.teacher.TeacherAssignmentResponse;
-import com.restapi.response.teacher.TeacherClassRoomResponse;
-import com.restapi.response.teacher.TeacherProfileResponse;
+import com.restapi.response.teacher.*;
 import com.restapi.service.AssignmentService;
 import com.restapi.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +30,16 @@ public class TeacherController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/assignment/{id}")
-    public ResponseEntity<APIResponse> getAssignments(@PathVariable Long id){
-        List<TeacherAssignmentResponse> assignments = teacherService.findAssignmentByTeacherId(id);
+//   Get all assignment belong to the particular teacher
+    @GetMapping("/assignment/{teacherUserId}")
+    public ResponseEntity<APIResponse> getAssignments(@PathVariable Long teacherUserId){
+        List<TeacherAssignmentResponse> assignments = teacherService.findAssignmentByTeacherId(teacherUserId);
         apiResponse.setData(assignments);
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+//    List of student list for particular class which is for student
     @GetMapping("/myclass/{id}")
     public ResponseEntity<APIResponse> getMyClass(@PathVariable Long id){
         List<TeacherClassRoomResponse> students = teacherService.getMyclass(id);
@@ -48,6 +48,19 @@ public class TeacherController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/assignment/loader/{assignmentId}")
+    public ResponseEntity<APIResponse> getAssignmentByAssignmentId(@PathVariable Long assignmentId){
+        TeacherAssignmentLoaderResponse teacherAssignmentLoaderResponse = teacherService.getAssignmentById(assignmentId);
+        apiResponse.setData(teacherAssignmentLoaderResponse);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
-
+    @GetMapping("/assignment/student/{assignmentId}")
+    public ResponseEntity<APIResponse> getStudentListBasedOnAssignment(@PathVariable Long assignmentId){
+        List<TeacherStudentListForAssignment> teacherStudentListForAssignmentList = teacherService.getStudentListBasedOnAssignment(assignmentId);
+        apiResponse.setData(teacherStudentListForAssignmentList);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

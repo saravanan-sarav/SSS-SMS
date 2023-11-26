@@ -32,6 +32,9 @@ public class Assignment {
     @Column(nullable = false)
     private Integer minScore;
 
+    @Column
+    private String comments;
+
     @ManyToOne
     @JoinColumn(name = "ass_type_id", referencedColumnName = "id",nullable = false)
     private AssignmentType assignmentType;
@@ -47,4 +50,6 @@ public class Assignment {
     @ManyToOne
     @JoinColumn(name = "subject_id",referencedColumnName = "id",nullable = false)
     private Subject subjectAssignment;
+
+
 }

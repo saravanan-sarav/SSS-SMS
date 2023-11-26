@@ -1,10 +1,12 @@
 package com.restapi.controller;
 
 import com.restapi.model.ClassRoom;
+import com.restapi.model.ClassStandard;
 import com.restapi.model.Role;
 import com.restapi.model.Student;
 import com.restapi.request.ClassRoomRequest;
 import com.restapi.response.ClassRoomResponse;
+import com.restapi.response.classroom.ClassStandardResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,14 @@ public class ClassRoomController {
         List<Student> students = classRoomService.studentFromClass(classId);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(students);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/standard")
+    public ResponseEntity<APIResponse> standardList(){
+        List<ClassStandardResponse> standards = classRoomService.standardList();
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(standards);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

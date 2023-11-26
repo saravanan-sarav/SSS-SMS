@@ -6,9 +6,12 @@ import com.restapi.model.*;
 import com.restapi.repository.*;
 import com.restapi.request.AssignmentRequest;
 import com.restapi.response.admin.AdminAssignmentResponse;
+import com.restapi.response.assignment.AssignmentTypeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,5 +66,14 @@ public class AssignmentService {
     public Assignment getAssignment(Long id) {
      Assignment assignment = assignmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("assignmentId","assignmentId", id));
      return assignment;
+    }
+
+    public List<AssignmentTypeResponse> getAssignmentType() {
+        List<AssignmentType> assignmentTypes = assignmentTypeRepository.findAll();
+        List<AssignmentTypeResponse> assignmentTypeResponseList = new ArrayList<>();
+        for(AssignmentType assignmentType: assignmentTypes){
+            assignmentTypeResponseList.add(assignmentDto.mapToAssignmentTypeResponse(assignmentType));
+        }
+return assignmentTypeResponseList;
     }
 }
