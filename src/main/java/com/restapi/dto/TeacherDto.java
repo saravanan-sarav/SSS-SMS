@@ -10,6 +10,7 @@ import com.restapi.response.teacher.TeacherProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -20,9 +21,9 @@ public class TeacherDto {
 
     public Teacher mapToTeacher(AppUser teacherAppUser, Address address, Subject subject, TeacherRequest teacherRequest) {
         Teacher teacher = new Teacher();
-        if(teacherRequest.getTeacherUserId()!=null){
+        if(teacherRequest.getTeacherUserId()!=0){
             Optional<Teacher> teacherFetch = teacherRepository.findByUserId(teacherAppUser.getId());
-            if(teacherFetch.get().getId()!=null){
+            if(teacherFetch.get().getId()!=0){
                 teacher.setId(teacherFetch.get().getId());
             }
         }
@@ -30,9 +31,10 @@ public class TeacherDto {
         teacher.setLastname(teacherRequest.getLastname());
         teacher.setPhoneNumber(teacherRequest.getPhoneNumber());
         teacher.setEmail(teacherRequest.getEmail());
-        teacher.setDateOfBirth(teacherRequest.getDateOfBirth());
+        teacher.setDateOfBirth(LocalDate.parse(teacherRequest.getDateOfBirth()));
         teacher.setAddress(address);
         teacher.setSubject(subject);
+        teacher.setGender(teacherRequest.getGender());
         teacher.setTeacherUser(teacherAppUser);
         return teacher;
     }
@@ -40,15 +42,16 @@ public class TeacherDto {
     public TeacherResponse mapToTeacherResponse(Teacher teacher) {
         TeacherResponse teacherResponse = new TeacherResponse();
 
-        teacherResponse.setTeacherId(teacher.getTeacherUser().getId());
+        teacherResponse.setTeacherUserId(teacher.getTeacherUser().getId());
         teacherResponse.setTeacherName(teacher.getFirstName());
         teacherResponse.setTeacherUsername(teacher.getTeacherUser().getUsername());
         teacherResponse.setAddressId(teacher.getAddress().getId());
+        teacherResponse.setPassword(teacher.getTeacherUser().getPassword());
+        teacherResponse.setEmail(teacher.getEmail());
         return teacherResponse;
     }
 
     public AdminTeacherResponse mapToAdminTeacherResponse(Teacher teacher, Subject subject, ClassRoom classRoom) {
-        System.out.println("With classRoom");
 
         AdminTeacherResponse adminTeacherResponse = new AdminTeacherResponse();
         if(classRoom!=null){
@@ -86,6 +89,7 @@ public class TeacherDto {
         TeacherAssignmentResponse teacherAssignmentResponse = new TeacherAssignmentResponse();
         teacherAssignmentResponse.setAssignmentId(assignment.getId());
         teacherAssignmentResponse.setAssignmentName(assignment.getAssignmentType().getType());
+        teacherAssignmentResponse.setClassId(assignment.getClassRoom().getId());
         teacherAssignmentResponse.setStandard(assignment.getClassRoom().getClassStandard().getStandard());
         teacherAssignmentResponse.setSubject(assignment.getSubjectAssignment().getSubject());
         teacherAssignmentResponse.setCreatedDate(assignment.getCreatedDate());

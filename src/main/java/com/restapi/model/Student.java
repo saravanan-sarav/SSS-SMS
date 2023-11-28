@@ -52,7 +52,4 @@ public class Student {
     private ClassRoom classRoom;
 
 
-    @OneToOne(mappedBy = "studentUserAssignmentGrade")
-    private AssignmentGrade assignmentGrade;
-
 }

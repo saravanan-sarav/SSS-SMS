@@ -17,6 +17,7 @@ public class AdminStudentResponse {
     private Long studentUserId;
     private String firstName;
     private String lastName;
+    private Long classId;
     private String className;
     private String gender;
     private String fatherName;

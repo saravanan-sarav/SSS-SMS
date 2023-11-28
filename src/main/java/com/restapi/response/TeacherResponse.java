@@ -10,8 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherResponse {
-    private Long teacherId;
+    private Long teacherUserId;
+    private Long addressId;
     private String teacherName;
     private String teacherUsername;
-    private Long addressId;
+    private String password;
+    private String email;
 }

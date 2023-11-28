@@ -20,7 +20,6 @@ public class AttendanceDto {
 
     public TeacherStudentAttendanceResponse mapToStudentListForAttendance(Student student, LocalDate today) {
         return new TeacherStudentAttendanceResponse(student.getStudentUser().getId(), student.getFirstName(),student.getLastname(),student.getClassRoom().getClassStandard().getStandard(),today);
-
     }
     public TeacherStudentAttendanceResponse mapToStudentListForAttendance(Student student) {
         TeacherStudentAttendanceResponse teacherStudentAttendanceResponse = new TeacherStudentAttendanceResponse();

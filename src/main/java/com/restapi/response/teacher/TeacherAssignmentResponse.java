@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class TeacherAssignmentResponse {
     private Long assignmentId;
     private String assignmentName;
+    private Long classId;
     private String standard;
     private String Subject;
     private LocalDate createdDate;

@@ -84,4 +84,7 @@ public class AppUser {
     @JsonIgnore
     @OneToOne(mappedBy = "teacherUserClassRoom")
     private ClassRoom classRoom;
+
+    @ManyToMany(mappedBy = "studentUserAssignmentGrade")
+    private List<AssignmentGrade> assignmentGradeList = new ArrayList<>();
 }

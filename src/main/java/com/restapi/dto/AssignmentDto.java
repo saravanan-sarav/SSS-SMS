@@ -4,6 +4,7 @@ import com.restapi.model.*;
 import com.restapi.response.admin.AdminAssignmentResponse;
 import com.restapi.response.assignment.AssignmentTypeResponse;
 import com.restapi.response.teacher.TeacherAssignmentLoaderResponse;
+import com.restapi.response.teacher.TeacherStudentListForAssignmentResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -59,5 +60,24 @@ public class AssignmentDto {
         teacherAssignmentLoaderResponse.setMinScore(assignment.getMinScore());
 
         return teacherAssignmentLoaderResponse;
+    }
+
+    public TeacherStudentListForAssignmentResponse MapToTeacherStudentListForAssignment(AssignmentGrade assignmentGrade, Student student) {
+        TeacherStudentListForAssignmentResponse teacherStudentListForAssignmentResponse = new TeacherStudentListForAssignmentResponse();
+        teacherStudentListForAssignmentResponse.setStudentUserid(student.getStudentUser().getId());
+        teacherStudentListForAssignmentResponse.setFirstName(student.getFirstName());
+        teacherStudentListForAssignmentResponse.setLastName(student.getLastname());
+        teacherStudentListForAssignmentResponse.setComments(assignmentGrade.getComments());
+        teacherStudentListForAssignmentResponse.setStudentMark(assignmentGrade.getMarksObtained());
+        teacherStudentListForAssignmentResponse.setAssignmentGradeId(assignmentGrade.getId());
+        return teacherStudentListForAssignmentResponse;
+    }
+
+    public TeacherStudentListForAssignmentResponse MapToTeacherStudentListForAssignment(Student student) {
+        TeacherStudentListForAssignmentResponse teacherStudentListForAssignmentResponse = new TeacherStudentListForAssignmentResponse();
+        teacherStudentListForAssignmentResponse.setStudentUserid(student.getStudentUser().getId());
+        teacherStudentListForAssignmentResponse.setFirstName(student.getFirstName());
+        teacherStudentListForAssignmentResponse.setLastName(student.getLastname());
+        return teacherStudentListForAssignmentResponse;
     }
 }

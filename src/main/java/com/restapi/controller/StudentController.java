@@ -6,6 +6,7 @@ import com.restapi.request.ParentRequest;
 import com.restapi.response.ParentResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.response.student.StudentAttendanceResponse;
+import com.restapi.response.student.StudentStatusResponse;
 import com.restapi.service.StudentService;
 import org.aspectj.apache.bcel.classfile.LineNumber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,5 @@ public class StudentController {
         apiResponse.setData(attendanceRegisters);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
 }

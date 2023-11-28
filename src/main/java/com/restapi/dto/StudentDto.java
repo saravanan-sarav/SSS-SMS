@@ -42,6 +42,7 @@ public class StudentDto {
         Student updatedStudent = student;
         updatedStudent.setStudentStatus(studentStatus);
         updatedStudent.setClassRoom(classRoom);
+        System.out.println(updatedStudent);
         return updatedStudent;
     }
 
@@ -62,6 +63,7 @@ public class StudentDto {
         adminStudentResponse.setFirstName(student.getFirstName());
         adminStudentResponse.setLastName(student.getLastname());
         adminStudentResponse.setClassName(student.getClassRoom().getClassStandard().getStandard());
+        adminStudentResponse.setClassId(student.getClassRoom().getId());
         adminStudentResponse.setGender(student.getGender());
         adminStudentResponse.setFatherName(parent.getFatherName());
         adminStudentResponse.setMotherName(parent.getMotherName());

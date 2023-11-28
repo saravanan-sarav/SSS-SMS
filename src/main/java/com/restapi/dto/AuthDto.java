@@ -75,7 +75,7 @@ public class AuthDto {
 
     public AppUser setParentAuth(Role parentRole, ParentRequest parentRequest) {
         AppUser user = new AppUser();
-        if(parentRequest.getParentUserId()!=null){
+        if(parentRequest.getParentUserId()!=0){
             Optional<AppUser> userFetch = userRepository.findById(parentRequest.getParentUserId());
             return userFetch.get();
         }else {
@@ -89,7 +89,7 @@ public class AuthDto {
 
     public AppUser setStudentAuth(Role studentRole, ParentRequest parentRequest) {
         AppUser user = new AppUser();
-        if(parentRequest.getStudentUserId()!=null){
+        if(parentRequest.getStudentUserId()!=0){
             Optional<AppUser> userFetch = userRepository.findById(parentRequest.getStudentUserId());
             return userFetch.get();
         }
@@ -103,7 +103,7 @@ public class AuthDto {
     }
 
     public AppUser setTeacherAuth(Role teacherRole, TeacherRequest teacherRequest) {
-        if(teacherRequest.getTeacherUserId()!=null){
+        if(teacherRequest.getTeacherUserId()!=0){
             Optional<AppUser> teacherFetch = userRepository.findById(teacherRequest.getTeacherUserId());
             return teacherFetch.get();
         }

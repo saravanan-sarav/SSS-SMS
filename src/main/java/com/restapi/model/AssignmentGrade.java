@@ -1,8 +1,10 @@
 package com.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,15 +16,19 @@ public class AssignmentGrade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer marksObtained = 0;
+    @Column(nullable = false)
+    private Integer marksObtained;
 
-    @OneToOne
+    @Column(nullable = false)
+    private String comments;
+
+    @ManyToOne
     @JoinColumn(name = "student_user_id",referencedColumnName = "id")
     private AppUser studentUserAssignmentGrade;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "assessment_id", referencedColumnName = "id")
-    private Assignment assignment;
+    private Assignment assignmentForGrade;
 
 
 }

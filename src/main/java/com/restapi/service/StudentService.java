@@ -3,9 +3,12 @@ package com.restapi.service;
 import com.restapi.dto.StudentDto;
 import com.restapi.model.AttendanceRegister;
 import com.restapi.model.Student;
+import com.restapi.model.StudentStatus;
 import com.restapi.repository.AttendanceRegisterRepository;
 import com.restapi.repository.StudentRepository;
+import com.restapi.repository.StudentStatusRepository;
 import com.restapi.response.student.StudentAttendanceResponse;
+import com.restapi.response.student.StudentStatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private StudentStatusRepository studentStatusRepository;
     @Autowired
     private StudentDto studentDto;
     @Autowired
@@ -33,5 +38,14 @@ public class StudentService {
         }else {
             return null;
         }
+    }
+
+    public List<StudentStatusResponse> getStudentStatus() {
+        List<StudentStatus> studentStatusList = studentStatusRepository.findAll();
+        List<StudentStatusResponse> studentStatusResponseList = new ArrayList<>();
+        for(StudentStatus studentStatus:studentStatusList){
+            studentStatusResponseList.add(new StudentStatusResponse(studentStatus.getId(),studentStatus.getStatus()));
+        }
+        return studentStatusResponseList;
     }
 }

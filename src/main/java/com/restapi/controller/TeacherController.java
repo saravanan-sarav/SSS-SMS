@@ -1,11 +1,9 @@
 package com.restapi.controller;
 
-import com.restapi.model.Assignment;
-import com.restapi.model.Student;
-import com.restapi.model.Teacher;
+import com.restapi.model.AssignmentGrade;
+import com.restapi.request.assignment.TeacherAssignmentMarkEntry;
 import com.restapi.response.common.APIResponse;
 import com.restapi.response.teacher.*;
-import com.restapi.service.AssignmentService;
 import com.restapi.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,8 +56,16 @@ public class TeacherController {
 
     @GetMapping("/assignment/student/{assignmentId}")
     public ResponseEntity<APIResponse> getStudentListBasedOnAssignment(@PathVariable Long assignmentId){
-        List<TeacherStudentListForAssignment> teacherStudentListForAssignmentList = teacherService.getStudentListBasedOnAssignment(assignmentId);
-        apiResponse.setData(teacherStudentListForAssignmentList);
+        List<TeacherStudentListForAssignmentResponse> teacherStudentListForAssignmentListResponse = teacherService.getStudentListBasedOnAssignment(assignmentId);
+        apiResponse.setData(teacherStudentListForAssignmentListResponse);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/assignment/markentry")
+    public ResponseEntity<APIResponse> getStudentListBasedOnAssignment(@RequestBody TeacherAssignmentMarkEntry teacherAssignmentMarkEntry){
+        AssignmentGrade assignmentGrade = teacherService.studentMarkEntry(teacherAssignmentMarkEntry);
+        apiResponse.setData(assignmentGrade);
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

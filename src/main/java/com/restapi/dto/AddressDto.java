@@ -10,7 +10,7 @@ public class AddressDto {
 
     public Address setParentAddress(ParentRequest parentRequest) {
         Address address = new Address();
-        if(parentRequest.getAddressId()!= null){
+        if(parentRequest.getAddressId()!= 0){
             address.setId(parentRequest.getAddressId());
         }
         address.setDoorNum(parentRequest.getDoorNum());
@@ -24,10 +24,11 @@ public class AddressDto {
 
     public Address setTeacherAddress(TeacherRequest teacherRequest) {
         Address address = new Address();
-        if(teacherRequest.getAddressId()!= null){
+        if(teacherRequest.getAddressId()!= 0){
             address.setId(teacherRequest.getAddressId());
         }
         address.setDoorNum(teacherRequest.getDoorNum());
+        address.setStreet(teacherRequest.getStreet());
         address.setAddrLine(teacherRequest.getAddrLine());
         address.setCity(teacherRequest.getCity());
         address.setState(teacherRequest.getState());

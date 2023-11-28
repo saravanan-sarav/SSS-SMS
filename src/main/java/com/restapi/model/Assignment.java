@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -51,5 +52,6 @@ public class Assignment {
     @JoinColumn(name = "subject_id",referencedColumnName = "id",nullable = false)
     private Subject subjectAssignment;
 
-
+    @OneToMany(mappedBy = "assignmentForGrade")
+    private List<AssignmentGrade> assignmentGradeList = new ArrayList<>();
 }

@@ -9,7 +9,7 @@ import com.restapi.model.Student;
 import com.restapi.repository.*;
 import com.restapi.request.ClassRoomRequest;
 import com.restapi.response.ClassRoomResponse;
-import com.restapi.response.classroom.ClassStandardResponse;
+import com.restapi.response.classroom.ClassListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,12 +87,12 @@ public class ClassRoomService {
         return students.get();
     }
 
-    public List<ClassStandardResponse> standardList() {
-        List<ClassStandard> classStandards = classStandardRepository.findAll();
-        List<ClassStandardResponse> classStandardResponseList = new ArrayList<>();
-        for (ClassStandard classStandard : classStandards) {
-            classStandardResponseList.add(classRoomDto.mapToStandard(classStandard));
+    public List<ClassListResponse> standardList() {
+        List<ClassRoom> classRooms = classRoomRepository.findAll();
+        List<ClassListResponse> classListResponseList = new ArrayList<>();
+        for (ClassRoom classRoom : classRooms) {
+            classListResponseList.add(classRoomDto.mapToClassList(classRoom));
         }
-        return classStandardResponseList;
+        return classListResponseList;
     }
 }

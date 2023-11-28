@@ -6,6 +6,7 @@ import com.restapi.dto.TeacherDto;
 import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
+import com.restapi.request.assignment.TeacherAssignmentMarkEntry;
 import com.restapi.response.teacher.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class TeacherService {
 
     @Autowired
     private AssignmentRepository assignmentRepository;
+    @Autowired
+    private AssignmentGradeRepository assignmentGradeRepository;
 
     @Autowired
     private TeacherDto teacherDto;
@@ -85,8 +88,44 @@ public class TeacherService {
         return null;
     }
 
-    public List<TeacherStudentListForAssignment> getStudentListBasedOnAssignment(Long assignmentId) {
+    public List<TeacherStudentListForAssignmentResponse> getStudentListBasedOnAssignment(Long assignmentId) {
+        List<TeacherStudentListForAssignmentResponse> teacherStudentListForAssignmentListResponse = new ArrayList<>();
 
-        return null;
+        Optional<Assignment> optionalAssignment = assignmentRepository.findById(assignmentId);
+        if (optionalAssignment.isPresent()) {
+            Optional<List<Student>> optionalStudents = studentRepository.findByClassRoomId(optionalAssignment.get().getClassRoom().getId());
+            if (optionalStudents.isPresent()) {
+                for (Student student : optionalStudents.get()) {
+                    Optional<AssignmentGrade> assignmentGrade = assignmentGradeRepository.findByStudentUserAssignmentGradeAndAssignment(optionalAssignment.get().getId(), student.getStudentUser().getId());
+                    if (assignmentGrade.isPresent()) {
+                        System.out.println(assignmentGrade.get().getMarksObtained());
+                        teacherStudentListForAssignmentListResponse.add(assignmentDto.MapToTeacherStudentListForAssignment(assignmentGrade.get(), student));
+                    } else {
+                        teacherStudentListForAssignmentListResponse.add(assignmentDto.MapToTeacherStudentListForAssignment(student));
+                    }
+                }
+            }
+        }
+        return teacherStudentListForAssignmentListResponse;
+    }
+
+    public AssignmentGrade studentMarkEntry(TeacherAssignmentMarkEntry teacherAssignmentMarkEntry) {
+        Optional<AssignmentGrade> optionalAssignmentGrade = assignmentGradeRepository.findById(teacherAssignmentMarkEntry.getAssignmentGradeId());
+        Optional<AppUser> optionalAppUser = userRepository.findById(teacherAssignmentMarkEntry.getStudentUserId());
+        Optional<Assignment> optionalAssignment = assignmentRepository.findById(teacherAssignmentMarkEntry.getAssignmentId());
+        AssignmentGrade assignmentGrade = new AssignmentGrade();
+        if (optionalAssignmentGrade.isPresent()) {
+            assignmentGrade.setId(teacherAssignmentMarkEntry.getAssignmentGradeId());
+        }
+        if (optionalAppUser.isPresent() && optionalAssignment.isPresent()) {
+            assignmentGrade.setAssignmentForGrade(optionalAssignment.get());
+            assignmentGrade.setMarksObtained(teacherAssignmentMarkEntry.getMarkObtained());
+            assignmentGrade.setComments(teacherAssignmentMarkEntry.getComments());
+            assignmentGrade.setStudentUserAssignmentGrade(optionalAppUser.get());
+            assignmentGrade = assignmentGradeRepository.save(assignmentGrade);
+
+        }
+
+        return assignmentGrade;
     }
 }

@@ -16,12 +16,9 @@ import com.restapi.response.teacher.TeacherStudentAttendanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static java.time.LocalDate.*;
 
 @Service
 public class AttendanceService {
@@ -47,26 +44,23 @@ public class AttendanceService {
 
     public List<TeacherStudentAttendanceResponse> findStudentListByClassId(Long id) {
         Optional<List<Student>> studentListOfClass = studentRepository.findByClassRoom(id);
-        System.out.println(studentListOfClass.get());
         List<TeacherStudentAttendanceResponse> teacherStudentAttendanceResponseList = new ArrayList<>();
         if (studentListOfClass.isPresent()) {
             for (Student student : studentListOfClass.get()) {
-                System.out.println(student.getFirstName());
-                System.out.println(student.getStudentUser().getId());
                 Optional<List<AttendanceRegister>> attendanceRegister = attendanceRegisterRepository.findAllUserId(student.getStudentUser().getId());
-                if(attendanceRegister.isPresent()){
+                if (attendanceRegister.isPresent()) {
                     Optional<AttendanceRegister> attendanceRegisterWithDate = attendanceRegisterRepository.findAllByUserIdWithTodayDate(student.getStudentUser().getId());
-                    System.out.println(attendanceRegister.get());
                     if (attendanceRegisterWithDate.isPresent()) {
-                        System.out.println("If Block");
                         teacherStudentAttendanceResponseList.add(attendanceDto.mapToStudentListForAttendance(student, attendanceRegisterWithDate.get().getDate()));
                     } else {
-                        System.out.println("Else Block");
                         teacherStudentAttendanceResponseList.add(attendanceDto.mapToStudentListForAttendance(student));
                     }
+                } else {
+                    teacherStudentAttendanceResponseList.add(attendanceDto.mapToStudentListForAttendance(student));
                 }
             }
         }
+
         return teacherStudentAttendanceResponseList;
     }
 
@@ -80,7 +74,6 @@ public class AttendanceService {
         AttendanceRegister attendanceRegister = new AttendanceRegister();
         attendanceRegister.setStudentUserAttendance(studentAppUser);
         attendanceRegister.setClassRoom(classRoom);
-
         attendanceRegister = attendanceRegisterRepository.save(attendanceRegister);
         return attendanceRegister;
     }

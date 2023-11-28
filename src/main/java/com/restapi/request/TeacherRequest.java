@@ -1,16 +1,15 @@
 package com.restapi.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class TeacherRequest {
     private Long teacherUserId;
     private Long addressId;
@@ -20,7 +19,7 @@ public class TeacherRequest {
     private String lastname;
     private String phoneNumber;
     private String email;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private Long subjectId;
     private String doorNum;
     private String street;
@@ -30,3 +29,5 @@ public class TeacherRequest {
     private Long pincode;
     private String gender;
 }
+
+

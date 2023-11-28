@@ -43,13 +43,8 @@ public class AttendanceController {
     @PostMapping("/entry")
     public ResponseEntity<APIResponse> markAttendance(@RequestBody AttendanceRequest attendanceRequest){
         AttendanceRegister attendanceRegister = attendanceService.markAttendanceForStudent(attendanceRequest);
-        apiResponse.setData(attendanceRegister);
+        apiResponse.setData(null);
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-
-
-
-
-
 }
