@@ -3,6 +3,7 @@ package com.restapi.dto;
 import com.restapi.model.*;
 import com.restapi.response.ClassRoomResponse;
 import com.restapi.response.admin.AdminClassRoomResponse;
+import com.restapi.response.admin.AdminStandardResponse;
 import com.restapi.response.classroom.ClassListResponse;
 import com.restapi.response.teacher.TeacherClassRoomResponse;
 import org.springframework.stereotype.Component;
@@ -67,5 +68,12 @@ public class ClassRoomDto {
 
     public ClassListResponse mapToClassList(ClassRoom classRoom) {
         return new ClassListResponse(classRoom.getId(),classRoom.getClassStandard().getStandard());
+    }
+
+    public AdminStandardResponse mapToAdminStandardResponse(ClassStandard classStandard) {
+        AdminStandardResponse adminStandardResponse = new AdminStandardResponse();
+        adminStandardResponse.setStandardId(classStandard.getId());
+        adminStandardResponse.setStandard(classStandard.getStandard());
+        return adminStandardResponse;
     }
 }

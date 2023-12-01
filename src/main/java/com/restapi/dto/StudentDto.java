@@ -3,9 +3,12 @@ package com.restapi.dto;
 import com.restapi.model.*;
 import com.restapi.repository.StudentRepository;
 import com.restapi.request.ParentRequest;
+import com.restapi.response.admin.AdminStudentListForAttendanceResponse;
 import com.restapi.response.admin.AdminStudentResponse;
 import com.restapi.response.admin.StudentApproveResponse;
+import com.restapi.response.student.StudentAssignmentResponse;
 import com.restapi.response.student.StudentAttendanceResponse;
+import com.restapi.response.student.StudentClassroomStructureResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -86,5 +89,79 @@ public class StudentDto {
             return studentAttendanceResponse;
         }
         return null;
+    }
+
+    public StudentClassroomStructureResponse mapToClassRoomStructureResponse(ClassRoom classRoom, Teacher classTeacher, Teacher tamilTeacher, Teacher englishTeacher, Teacher mathsTeacher, Teacher scienceTeacher, Teacher socialTeacher) {
+        StudentClassroomStructureResponse studentClassroomStructureResponse = new StudentClassroomStructureResponse();
+        studentClassroomStructureResponse.setClassId(classRoom.getId());
+        studentClassroomStructureResponse.setClassStandard(classRoom.getClassStandard().getStandard());
+        studentClassroomStructureResponse.setClassInChargeName(classTeacher.getFirstName());
+        studentClassroomStructureResponse.setClassInChargeId(classTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setClassInChargePhone(classTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setClassInChargeEmail(classTeacher.getEmail());
+        studentClassroomStructureResponse.setTamilTeacherId(tamilTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setTamilTeacherName(tamilTeacher.getFirstName());
+        studentClassroomStructureResponse.setTamilTeacherPhone(tamilTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setTamilTeacherEmail(tamilTeacher.getEmail());
+
+        studentClassroomStructureResponse.setEnglishTeacherId(englishTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setEnglishTeacherName(englishTeacher.getFirstName());
+        studentClassroomStructureResponse.setEnglishTeacherPhone(englishTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setEnglishTeacherEmail(englishTeacher.getEmail());
+
+        studentClassroomStructureResponse.setMathsTeacherId(mathsTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setMathsTeacherName(mathsTeacher.getFirstName());
+        studentClassroomStructureResponse.setMathsTeacherPhone(mathsTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setMathsTeacherEmail(mathsTeacher.getEmail());
+
+        studentClassroomStructureResponse.setScienceTeacherId(scienceTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setScienceTeacherName(scienceTeacher.getFirstName());
+        studentClassroomStructureResponse.setScienceTeacherPhone(scienceTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setScienceTeacherEmail(scienceTeacher.getEmail());
+
+        studentClassroomStructureResponse.setSocialTeacherId(socialTeacher.getTeacherUser().getId());
+        studentClassroomStructureResponse.setSocialTeacherName(socialTeacher.getFirstName());
+        studentClassroomStructureResponse.setSocialTeacherPhone(socialTeacher.getPhoneNumber());
+        studentClassroomStructureResponse.setSocialTeacherEmail(socialTeacher.getEmail());
+
+        return studentClassroomStructureResponse;
+    }
+
+    public StudentAssignmentResponse mapToStudentAssignmentResponse(Assignment assignment, AssignmentGrade optionalAssignmentGrade) {
+        StudentAssignmentResponse studentAssignmentResponse = new StudentAssignmentResponse();
+        studentAssignmentResponse.setAssignmentId(assignment.getId());
+        studentAssignmentResponse.setAssignmentType(assignment.getAssignmentType().getType());
+        studentAssignmentResponse.setComments(assignment.getComments());
+        studentAssignmentResponse.setSubjects(assignment.getSubjectAssignment().getSubject());
+        studentAssignmentResponse.setCreatedDate(assignment.getCreatedDate());
+        studentAssignmentResponse.setDueDate(assignment.getDeadline());
+        studentAssignmentResponse.setObtainedMark(Long.valueOf(optionalAssignmentGrade.getMarksObtained()));
+        studentAssignmentResponse.setSubmitComments(optionalAssignmentGrade.getComments());
+        studentAssignmentResponse.setTotalMark(Long.valueOf(assignment.getTotalGrade()));
+        studentAssignmentResponse.setMinMark(Long.valueOf(assignment.getMinScore()));
+        return studentAssignmentResponse;
+    }
+
+    public StudentAssignmentResponse mapToStudentAssignmentResponse(Assignment assignment) {
+        StudentAssignmentResponse studentAssignmentResponse = new StudentAssignmentResponse();
+        studentAssignmentResponse.setAssignmentId(assignment.getId());
+        studentAssignmentResponse.setAssignmentType(assignment.getAssignmentType().getType());
+        studentAssignmentResponse.setComments(assignment.getComments());
+        studentAssignmentResponse.setSubjects(assignment.getSubjectAssignment().getSubject());
+        studentAssignmentResponse.setCreatedDate(assignment.getCreatedDate());
+        studentAssignmentResponse.setDueDate(assignment.getDeadline());
+        studentAssignmentResponse.setTotalMark(Long.valueOf(assignment.getTotalGrade()));
+        studentAssignmentResponse.setMinMark(Long.valueOf(assignment.getMinScore()));
+        return studentAssignmentResponse;
+    }
+
+    public AdminStudentListForAttendanceResponse mapToAdminStudentListForAttendanceResponse(Student student, ClassRoom classRoom) {
+        AdminStudentListForAttendanceResponse adminStudentListForAttendanceResponse = new AdminStudentListForAttendanceResponse();
+        adminStudentListForAttendanceResponse.setStudentId(student.getStudentUser().getId());
+        adminStudentListForAttendanceResponse.setFirstName(student.getFirstName());
+        adminStudentListForAttendanceResponse.setLastName(student.getLastname());
+        adminStudentListForAttendanceResponse.setClassId(classRoom.getId());
+        adminStudentListForAttendanceResponse.setStandard(classRoom.getClassStandard().getStandard());
+        return adminStudentListForAttendanceResponse;
     }
 }

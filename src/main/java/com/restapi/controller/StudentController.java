@@ -1,14 +1,9 @@
 package com.restapi.controller;
 
-import com.restapi.model.AttendanceRegister;
 import com.restapi.model.Student;
-import com.restapi.request.ParentRequest;
-import com.restapi.response.ParentResponse;
 import com.restapi.response.common.APIResponse;
-import com.restapi.response.student.StudentAttendanceResponse;
-import com.restapi.response.student.StudentStatusResponse;
+import com.restapi.response.student.*;
 import com.restapi.service.StudentService;
-import org.aspectj.apache.bcel.classfile.LineNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +21,19 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<APIResponse> create(@PathVariable Long userId){
-        Student student = studentService.getDetails(userId);
+    public ResponseEntity<APIResponse> getStudentProfile(@PathVariable Long userId){
+        StudentProfileResponse studentProfileResponse = studentService.getStudentProfile(userId);
         apiResponse.setStatus(HttpStatus.OK.value());
-        apiResponse.setData(student);
+        apiResponse.setData(studentProfileResponse);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-
+    @GetMapping("/parent/{userId}")
+    public ResponseEntity<APIResponse> getStudentParentProfile(@PathVariable Long userId){
+        StudentParentProfileResponse studentParentProfileResponse = studentService.getStudentParentProfile(userId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(studentParentProfileResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
     @GetMapping("/attendance/{userId}")
     public ResponseEntity<APIResponse> getAttendance(@PathVariable Long userId){
         StudentAttendanceResponse attendanceRegisters = studentService.getAttendance(userId);
@@ -41,4 +42,20 @@ public class StudentController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+//    get student class details based on student Id
+    @GetMapping("/teacher/details/{id}")
+    public ResponseEntity<APIResponse> getTeacherDetails(@PathVariable Long id){
+        StudentClassroomStructureResponse studentClassroomStructureResponse = studentService.getTeacherDetails(id);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(studentClassroomStructureResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/assignment/{userId}")
+    public ResponseEntity<APIResponse> getAssignmentDetails(@PathVariable Long userId){
+        List<StudentAssignmentResponse> studentAssignmentResponse = studentService.getAssignmentDetails(userId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(studentAssignmentResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

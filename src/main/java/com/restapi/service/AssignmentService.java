@@ -54,6 +54,7 @@ public class AssignmentService {
             assignment.setDeadline(assignmentRequest.getDeadline());
             assignment.setTotalGrade(assignmentRequest.getTotalGrade());
             assignment.setClassRoom(classRoom);
+            assignment.setComments(assignmentRequest.getComments());
             assignment.setSubjectAssignment(subject);
             assignment.setMinScore(assignmentRequest.getMinScore());
         }

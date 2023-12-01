@@ -180,4 +180,42 @@ public class AdminService {
         }
         return adminStudentResponseList;
     }
+
+    public List<AdminStandardResponse> getStandardAll() {
+        List<ClassStandard> classStandardList = classStandardRepository.findAll();
+        List<AdminStandardResponse> adminStandardResponseList = new ArrayList<>();
+        for(ClassStandard classStandard:classStandardList){
+            adminStandardResponseList.add(classRoomDto.mapToAdminStandardResponse(classStandard));
+        }
+        return adminStandardResponseList;
+    }
+
+    public List<AdminAddClassTeacherResponse> getTeacherListForAddClassroom() {
+        List<Teacher> teacherList = teacherRepository.findAll();
+        List<AdminAddClassTeacherResponse> adminAddClassTeacherResponseList = new ArrayList<>();
+        for(Teacher teacher :teacherList){
+            Optional<ClassRoom> optionalClassRoom = classRoomRepository.findByTeacherUserClassRoom(teacher.getTeacherUser().getId());
+            if(optionalClassRoom.isPresent()){
+                adminAddClassTeacherResponseList.add(teacherDto.mapToAdminAddClassTeacherResponse(teacher,
+                        optionalClassRoom));
+            }else {
+                adminAddClassTeacherResponseList.add(teacherDto.mapToAdminAddClassTeacherResponse(teacher));
+            }
+        }
+
+        return adminAddClassTeacherResponseList;
+    }
+
+    public List<AdminStudentListForAttendanceResponse> getStudentListForAttendance(Long classId) {
+        Optional<ClassRoom> optionalClassRoom = classRoomRepository.findById(classId);
+        List<AdminStudentListForAttendanceResponse> adminStudentListForAttendanceResponseList = new ArrayList<>();
+        if(optionalClassRoom.isPresent()){
+            Optional<List<Student>> optionalStudentList = studentRepository.findByClassRoom(optionalClassRoom.get().getId());
+            for(Student student :optionalStudentList.get()){
+                adminStudentListForAttendanceResponseList.add(studentDto.mapToAdminStudentListForAttendanceResponse(student,optionalClassRoom.get()));
+            }
+            return adminStudentListForAttendanceResponseList;
+        }
+        return null;
+    }
 }

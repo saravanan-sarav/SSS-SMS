@@ -4,6 +4,8 @@ import com.restapi.model.*;
 import com.restapi.repository.TeacherRepository;
 import com.restapi.request.TeacherRequest;
 import com.restapi.response.TeacherResponse;
+import com.restapi.response.admin.AdminAddClassTeacherResponse;
+import com.restapi.response.admin.AdminStandardResponse;
 import com.restapi.response.admin.AdminTeacherResponse;
 import com.restapi.response.teacher.TeacherAssignmentResponse;
 import com.restapi.response.teacher.TeacherProfileResponse;
@@ -119,5 +121,23 @@ public class TeacherDto {
         teacherProfileResponse.setState(teacher.getAddress().getState());
         teacherProfileResponse.setPincode(teacher.getAddress().getPincode());
         return teacherProfileResponse;
+    }
+
+    public AdminAddClassTeacherResponse mapToAdminAddClassTeacherResponse(Teacher teacher, Optional<ClassRoom> optionalClassRoom) {
+        AdminAddClassTeacherResponse adminAddClassTeacherResponse = new AdminAddClassTeacherResponse();
+        adminAddClassTeacherResponse.setTeacherUserId(teacher.getTeacherUser().getId());
+        adminAddClassTeacherResponse.setTeacherName(teacher.getFirstName());
+        adminAddClassTeacherResponse.setTeacherSubjectId(teacher.getSubject().getId());
+        adminAddClassTeacherResponse.setClassId(optionalClassRoom.get().getId());
+        adminAddClassTeacherResponse.setStandardId(optionalClassRoom.get().getClassStandard().getId());
+        return  adminAddClassTeacherResponse;
+    }
+    public AdminAddClassTeacherResponse mapToAdminAddClassTeacherResponse(Teacher teacher) {
+        AdminAddClassTeacherResponse adminAddClassTeacherResponse = new AdminAddClassTeacherResponse();
+        adminAddClassTeacherResponse.setTeacherUserId(teacher.getTeacherUser().getId());
+        adminAddClassTeacherResponse.setTeacherName(teacher.getFirstName());
+        adminAddClassTeacherResponse.setTeacherSubjectId(teacher.getSubject().getId());
+
+        return  adminAddClassTeacherResponse;
     }
 }

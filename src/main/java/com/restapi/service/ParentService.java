@@ -68,7 +68,7 @@ public class ParentService {
         StudentStatus studentStatus = studentStatusRepository.findById(1l)
                 .orElseThrow(()-> new ResourceNotFoundException("statusId","statusId",1));
 
-        ClassRoom classRoom = classRoomRepository.findById(parentRequest.getClassId())
+        ClassRoom classRoom = classRoomRepository.findByStandardId(parentRequest.getClassId())
                 .orElseThrow(()-> new ResourceNotFoundException("classId","classId",parentRequest.getClassId()));
 
         AppUser parentAppUser = userRepository.save(authDto.setParentAuth(parentRole,parentRequest));

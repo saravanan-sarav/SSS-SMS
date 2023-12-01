@@ -106,4 +106,28 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/standard/all")
+    public ResponseEntity<APIResponse> getStandardAll(){
+        List<AdminStandardResponse> adminStandardResponseList = adminService.getStandardAll();
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(adminStandardResponseList);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/add/classroom/teacher/all")
+    public ResponseEntity<APIResponse> getTeacherListForAddClassroom(){
+        List<AdminAddClassTeacherResponse> adminAddClassTeacherResponseList = adminService.getTeacherListForAddClassroom();
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(adminAddClassTeacherResponseList);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/attendance/students/{classId}")
+    public ResponseEntity<APIResponse> getStudentListForAttendance(@PathVariable Long classId){
+        List<AdminStudentListForAttendanceResponse> adminStudentListForAttendanceResponseList = adminService.getStudentListForAttendance(classId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(adminStudentListForAttendanceResponseList);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 }
