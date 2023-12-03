@@ -130,5 +130,5 @@ ___
 
 **👉 Image of schema**
 ![DB - Model](https://github.com/saravanan-sarav/SSS-SMS-Angular/assets/145537699/1ced8560-c135-4209-987d-e4827fbd1699)
-## 🔗 Youtube Link of demo video
-https://youtu.be/FEuTVGtqmyY?si=3unwWhoJ_wszTeah
+## 🔗 Link of demo video
+https://drive.google.com/file/d/1Nsw7rFZMG1Pfu-WiTUZe-91spFvojmY6/view?usp=drivesdk
