@@ -24,4 +24,7 @@ public interface AttendanceRegisterRepository extends JpaRepository<AttendanceRe
 
     @Query("SELECT att FROM AttendanceRegister att INNER JOIN att.studentUserAttendance c WHERE c.id=?1")
     Optional<List<AttendanceRegister>> findAllUserId(Long id);
+
+    @Query("SELECT att FROM AttendanceRegister att WHERE att.date=CURRENT_DATE")
+   Optional<List<AttendanceRegister>> findByTodayDate();
 }

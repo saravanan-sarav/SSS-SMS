@@ -10,12 +10,19 @@ import com.restapi.repository.*;
 import com.restapi.request.ParentRequest;
 import com.restapi.response.ParentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 public class ParentService {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private ParentRepository parentRepository;
@@ -51,6 +58,8 @@ public class ParentService {
 
     @Autowired
     private ClassStandardRepository classStandardRepository;
+    @Autowired
+    private StorageService storageService;
 
 
     public Parent findById(Long id) {
@@ -81,8 +90,18 @@ public class ParentService {
 
         Parent parent = parentRepository.save(parentDto.setParentDetails(parentAppUser,studentAppUser,parentAddress,parentRequest));
 
-        ParentResponse parentResponse = parentDto.responseConversion(parent);
+        return parentDto.responseConversion(parent);
+    }
 
-        return parentResponse;
+    public File getFile(Long id) {
+        Optional<Student> student = studentRepository.findByUserId(id);
+
+        Resource resource = storageService.loadFileAsResource(student.get().getPhoto());
+
+        try {
+            return resource.getFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

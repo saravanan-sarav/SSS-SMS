@@ -140,6 +140,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     private Parent createParentIfNotFound(String motherName, String motherPhoneNumber, String motherOccupation, String fatherName, String fatherPhoneNumber, String fatherOccupation, String email, AppUser parentAppUser, Address parentAddress, AppUser studentAppUser) {
+        System.out.println(org.hibernate.Version.getVersionString());
         Optional<Parent> OptionalParent = parentRepository.findByUserId(parentAppUser.getId());
         if(!OptionalParent.isPresent()){
             Parent parent = new Parent();
@@ -296,4 +297,5 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         AppUser user = optionalUser.get();
         return user;
     }
+
 }

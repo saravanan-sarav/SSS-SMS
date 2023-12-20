@@ -24,9 +24,9 @@ public class StudentDto {
     private StudentRepository studentRepository;
     public Student setStudentDetails(ClassRoom classRoom, StudentStatus studentStatus, AppUser studentAppUser, ParentRequest parentRequest) {
         Student student = new Student();
-        if(parentRequest.getStudentUserId()!=null){
+        if(parentRequest.getStudentUserId()!=0){
             Optional<Student> studentFetch = studentRepository.findByUserId(parentRequest.getStudentUserId());
-            if(studentFetch.get().getId()!=null){
+            if(studentFetch.get().getId()!=0){
                 student.setId(studentFetch.get().getId());
             }
         }

@@ -72,6 +72,8 @@ public class AdminService {
     @Autowired
     private ParentDto parentDto;
 
+    @Autowired
+    private AttendanceRegisterRepository attendanceRegisterRepository;
     public List<AdminStudentResponse> getAllStudents() {
         List<Student> students = studentRepository.findAll();
 
@@ -125,14 +127,8 @@ public class AdminService {
 //        userid, addressid, subjectid
         Role teacherRole = roleRepository.findById(3)
                 .orElseThrow(() -> new ResourceNotFoundException("roleId", "roleId", 3));
-        System.out.println(teacherRequest.getDateOfBirth());
-        System.out.println(teacherRequest.getTeacherPassword());
         AppUser teacherAppUser = userRepository.save(authDto.setTeacherAuth(teacherRole, teacherRequest));
-        System.out.println("appUser came");
-        System.out.println(teacherAppUser.getCreatedAt());
         Address address = addressRepository.save(addressDto.setTeacherAddress(teacherRequest));
-        System.out.println("address came");
-        System.out.println(address.getCreated_at());
         Subject subject = subjectRepository.findById(teacherRequest.getSubjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("subjectId", "subjectId", teacherRequest.getSubjectId()));
         System.out.println(subject.getSubject());
@@ -217,5 +213,16 @@ public class AdminService {
             return adminStudentListForAttendanceResponseList;
         }
         return null;
+    }
+
+    public Integer getTodayPresentData() {
+        int count =0;
+        Optional<List<AttendanceRegister>> optionalAttendanceRegister = attendanceRegisterRepository.findByTodayDate();
+        if(optionalAttendanceRegister.isPresent()){
+            for(AttendanceRegister attendanceRegister : optionalAttendanceRegister.get()){
+                count +=1;
+            }
+        }
+        return count;
     }
 }

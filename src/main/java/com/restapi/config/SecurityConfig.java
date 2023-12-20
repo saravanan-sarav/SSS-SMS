@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/api/parent/register")
                 .permitAll()
-                .antMatchers("/api/admin/standard/all  ")
+                .antMatchers("/api/admin/standard/all")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

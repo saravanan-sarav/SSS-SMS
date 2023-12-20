@@ -31,9 +31,7 @@ public class Student {
     @Column(nullable = false, length =100)
     private String gender;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] photo;
+    private String photo;
 
     @CreationTimestamp
     @Column(updatable = false)

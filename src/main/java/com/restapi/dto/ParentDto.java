@@ -21,9 +21,9 @@ public class ParentDto {
 
     public Parent setParentDetails(AppUser parentAppUser, AppUser studentAppUser, Address parentAddress, ParentRequest parentRequest) {
         Parent parent = new Parent();
-        if(parentRequest.getParentUserId()!=null){
+        if(parentRequest.getParentUserId()!=0){
             Optional<Parent> parentFetch = parentRepository.findByUserId(parentRequest.getParentUserId());
-            if (parentFetch.get().getId() != null) {
+            if (parentFetch.get().getId() != 0) {
                 parent.setId(parentFetch.get().getId());
             }
         }

@@ -130,4 +130,11 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/today/present")
+    public ResponseEntity<APIResponse> getTodayPresentData(){
+       Integer attendanceCount = adminService.getTodayPresentData();
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(attendanceCount);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

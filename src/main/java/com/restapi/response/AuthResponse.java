@@ -15,4 +15,5 @@ public class AuthResponse {
     private Long studentId;
     private Long studentClassId;
     private Long parentId;
+    private Long studentActiveStatus;
 }

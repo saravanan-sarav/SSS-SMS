@@ -7,12 +7,15 @@ import com.restapi.request.RegisterRequest;
 import com.restapi.request.TeacherRequest;
 import com.restapi.response.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
 public class AuthDto {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -53,23 +56,34 @@ public class AuthDto {
             }
             authResponse.setSubjectId(teacher.get().getSubject().getId());
         }else if (appUser.getRoles().getName().equals(Role.STUDENT)){
-            System.out.println("Came Student");
             Parent parent = parentRepository.findByStudentUserId(appUser.getId());
-            authResponse.setId(appUser.getId());
-            authResponse.setUsername(appUser.getUsername());
-            authResponse.setName(appUser.getName());
-            authResponse.setRole(appUser.getRoles().getName());
-            authResponse.setParentId(parent.getParentUser().getId());
+            System.out.println(parent.getStudentUserForParent().getId());
+            Optional<Student> student = studentRepository.findByUserIdForApprove(parent.getStudentUserForParent().getId());
+            if(student.isPresent()){
+                authResponse.setId(appUser.getId());
+                authResponse.setUsername(appUser.getUsername());
+                authResponse.setName(appUser.getName());
+                authResponse.setRole(appUser.getRoles().getName());
+                authResponse.setParentId(parent.getParentUser().getId());
+                authResponse.setStudentActiveStatus(student.get().getStudentStatus().getId());
+            }
         }else if (appUser.getRoles().getName().equals(Role.PARENT)){
             Optional<Parent> parent = parentRepository.findByUserId(appUser.getId());
             if(parent.isPresent()){
-                authResponse.setStudentId(parent.get().getStudentUserForParent().getId());
+                Optional<Student> student = studentRepository.findByUserIdForApprove(parent.get().getStudentUserForParent().getId());
+                authResponse.setStudentId(student.get().getStudentUser().getId());
+                if(student.isPresent()) {
+                    authResponse.setId(appUser.getId());
+                    authResponse.setUsername(appUser.getUsername());
+                    authResponse.setName(appUser.getName());
+                    authResponse.setRole(appUser.getRoles().getName());
+                    authResponse.setStudentActiveStatus(student.get().getStudentStatus().getId());
+                    authResponse.setStudentActiveStatus(student.get().getStudentStatus().getId());
+                }
             }
-            authResponse.setId(appUser.getId());
-            authResponse.setUsername(appUser.getUsername());
-            authResponse.setName(appUser.getName());
-            authResponse.setRole(appUser.getRoles().getName());
+
         }
+        System.out.println(authResponse.getStudentActiveStatus());
         return authResponse;
     }
 
@@ -80,7 +94,7 @@ public class AuthDto {
             return userFetch.get();
         }else {
             user.setUsername(parentRequest.getParentUsername());
-            user.setPassword(parentRequest.getParentPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(parentRequest.getParentPassword()));
             user.setName(parentRequest.getFatherName());
             user.setRoles(parentRole);
             return user;
@@ -95,7 +109,7 @@ public class AuthDto {
         }
         else {
             user.setUsername(parentRequest.getStudentUsername());
-            user.setPassword(parentRequest.getStudentPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(parentRequest.getStudentPassword()));
             user.setName(parentRequest.getFirstName());
             user.setRoles(studentRole);
             return user;
@@ -110,7 +124,7 @@ public class AuthDto {
         else {
             AppUser user = new AppUser();
             user.setUsername(teacherRequest.getTeacherUsername());
-            user.setPassword(teacherRequest.getTeacherPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(teacherRequest.getTeacherPassword()));
             user.setName(teacherRequest.getFirstName());
             user.setRoles(teacherRole);
             return user;
