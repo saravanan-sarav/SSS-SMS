@@ -2,7 +2,6 @@ package com.restapi.controller;
 
 import com.restapi.model.*;
 import com.restapi.request.TeacherRequest;
-import com.restapi.request.admin.DummyTeacherRequest;
 import com.restapi.request.admin.StudentApproveRequest;
 import com.restapi.response.admin.*;
 import com.restapi.response.TeacherResponse;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController

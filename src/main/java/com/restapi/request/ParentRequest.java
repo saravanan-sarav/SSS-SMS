@@ -6,14 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ParentRequest {
+    @NotEmpty(message = "parentUserId is required")
     private Long parentUserId;
+    @NotEmpty(message = "studentUserId")
     private Long studentUserId;
+    @NotEmpty(message = "addressId is required")
     private Long addressId;
     private String firstName;
     private String lastName;

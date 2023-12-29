@@ -5,7 +5,6 @@ import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
 import com.restapi.repository.*;
 import com.restapi.request.TeacherRequest;
-import com.restapi.request.admin.DummyTeacherRequest;
 import com.restapi.request.admin.StudentApproveRequest;
 import com.restapi.response.TeacherResponse;
 import com.restapi.response.admin.*;

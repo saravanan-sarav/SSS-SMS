@@ -26,7 +26,7 @@ public class  AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<APIResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<APIResponse> login(@Valid @RequestBody LoginRequest loginRequest) throws InterruptedException {
         AuthResponse loggedInUser = userService.login(loginRequest);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(loggedInUser);

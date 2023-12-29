@@ -68,7 +68,6 @@ public class SecurityConfig {
         httpSecurity.headers().frameOptions().disable();
         httpSecurity.exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);
-
         return httpSecurity.build();
     }
 }
