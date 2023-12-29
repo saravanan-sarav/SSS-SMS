@@ -46,8 +46,10 @@ public class Student {
     private StudentStatus studentStatus;
 
     @OneToOne
-    @JoinColumn(name = "class_Id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "class_Id", referencedColumnName = "id")
     private ClassRoom classRoom;
 
+    @OneToMany(mappedBy = "LeaveApplicationStudent")
+    private List<LeaveApplication> leaveApplicationList= new ArrayList<>();
 
 }

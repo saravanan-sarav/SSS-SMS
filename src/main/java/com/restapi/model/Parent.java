@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -56,4 +57,7 @@ public class Parent {
     @OneToOne
     @JoinColumn(name = "student_user_id", referencedColumnName = "id",unique = true)
     private AppUser studentUserForParent;
+
+    @OneToMany(mappedBy = "leaveApplicationParent")
+    private List<LeaveApplication> leaveApplication = new ArrayList<>();
 }

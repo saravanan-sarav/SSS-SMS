@@ -2,6 +2,7 @@ package com.restapi.dataloader;
 
 import com.restapi.model.*;
 import com.restapi.repository.*;
+import com.restapi.response.leave.LeaveApplyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -51,6 +52,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private LeaveStatusRepository leaveStatusRepository;
+
+    @Autowired LeaveApplicationRepository leaveApplicationRepository;
 
     @Override
     @Transactional
@@ -137,6 +143,21 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Parent parent = createParentIfNotFound("Meena S","8807456056","houseWife","Subramani G","9042241331","Labour","meena@gmail.com",parentAppUser,parentAddress,studentAppUser);
 
         alreadySetup = true;
+
+        LeaveStatus leaveStatusPending = createLeaveStatusIfNotFound(LeaveStatus.PENDING);
+        LeaveStatus leaveStatusApproved = createLeaveStatusIfNotFound(LeaveStatus.APPROVE);
+        LeaveStatus leaveStatusReject = createLeaveStatusIfNotFound(LeaveStatus.REJECTED);
+
+    }
+
+    private LeaveStatus createLeaveStatusIfNotFound(String status) {
+        Optional<LeaveStatus> optionalLeaveStatus = leaveStatusRepository.findByLeaveStatus(status);
+        if(optionalLeaveStatus.isEmpty()){
+            LeaveStatus leaveStatus = new LeaveStatus();
+            leaveStatus.setLeaveStatus(status);
+            return leaveStatusRepository.save(leaveStatus);
+        }
+        return optionalLeaveStatus.get();
     }
 
     private Parent createParentIfNotFound(String motherName, String motherPhoneNumber, String motherOccupation, String fatherName, String fatherPhoneNumber, String fatherOccupation, String email, AppUser parentAppUser, Address parentAddress, AppUser studentAppUser) {
