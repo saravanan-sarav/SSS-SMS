@@ -96,6 +96,13 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/report/{userId}")
+    public ResponseEntity<APIResponse> getStudentDetailForReport(@PathVariable Long userId){
+        StudentDetailReportResponse studentDetailReport  = adminService.getStudentDetailReport(userId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(studentDetailReport);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
     @GetMapping("/status")
     public ResponseEntity<APIResponse> getStudentStatus(){
         List<StudentStatusResponse> studentStatusResponse = studentService.getStudentStatus();

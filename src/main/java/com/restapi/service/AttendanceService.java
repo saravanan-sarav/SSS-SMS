@@ -11,6 +11,7 @@ import com.restapi.repository.ClassRoomRepository;
 import com.restapi.repository.StudentRepository;
 import com.restapi.repository.UserRepository;
 import com.restapi.request.AttendanceRequest;
+import com.restapi.response.AttendanceCountResponse;
 import com.restapi.response.AttendanceResponse;
 import com.restapi.response.teacher.TeacherStudentAttendanceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +77,14 @@ public class AttendanceService {
         attendanceRegister.setClassRoom(classRoom);
         attendanceRegister = attendanceRegisterRepository.save(attendanceRegister);
         return attendanceRegister;
+    }
+
+    public AttendanceCountResponse getAttendancePercentageCount() {
+        List<Long> presentCount = attendanceRegisterRepository.findByTodayDateCount();
+        List<Long> studentCount = studentRepository.ActiveStudentCount();
+        AttendanceCountResponse attendanceCountResponse = new AttendanceCountResponse();
+            attendanceCountResponse.setPresent(presentCount.get(0));
+            attendanceCountResponse.setAbsent(studentCount.get(0) - presentCount.get(0));
+        return attendanceCountResponse;
     }
 }

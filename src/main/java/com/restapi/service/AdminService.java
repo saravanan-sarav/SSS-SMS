@@ -73,6 +73,10 @@ public class AdminService {
 
     @Autowired
     private AttendanceRegisterRepository attendanceRegisterRepository;
+
+    @Autowired
+    private AssignmentGradeRepository assignmentGradeRepository;
+
     public List<AdminStudentResponse> getAllStudents() {
         List<Student> students = studentRepository.findAll();
 
@@ -104,9 +108,9 @@ public class AdminService {
     public List<AdminParentResponse> getAllParents() {
         List<Parent> parents = parentRepository.findAll();
         List<AdminParentResponse> adminParentResponseList = new ArrayList<>();
-        for (Parent parent : parents){
-            Student student = studentRepository.findByUserIdForApprove(parent.getStudentUserForParent().getId()).orElseThrow(()-> new ResourceNotFoundException("StudentId","StudentId",parent.getStudentUserForParent().getId()));
-            adminParentResponseList.add(parentDto.mapToAdminParentResponse(parent,student));
+        for (Parent parent : parents) {
+            Student student = studentRepository.findByUserIdForApprove(parent.getStudentUserForParent().getId()).orElseThrow(() -> new ResourceNotFoundException("StudentId", "StudentId", parent.getStudentUserForParent().getId()));
+            adminParentResponseList.add(parentDto.mapToAdminParentResponse(parent, student));
         }
         return adminParentResponseList;
     }
@@ -138,7 +142,7 @@ public class AdminService {
     }
 
     public StudentApproveResponse approveStudent(StudentApproveRequest studentApproveRequest) {
-        System.out.println(" Came Here"+studentApproveRequest.getStudentUserId());
+        System.out.println(" Came Here" + studentApproveRequest.getStudentUserId());
         Optional<Student> optionalStudent = studentRepository.findByUserIdForApprove(studentApproveRequest.getStudentUserId());
         Student student = optionalStudent.get();
 
@@ -179,7 +183,7 @@ public class AdminService {
     public List<AdminStandardResponse> getStandardAll() {
         List<ClassStandard> classStandardList = classStandardRepository.findAll();
         List<AdminStandardResponse> adminStandardResponseList = new ArrayList<>();
-        for(ClassStandard classStandard:classStandardList){
+        for (ClassStandard classStandard : classStandardList) {
             adminStandardResponseList.add(classRoomDto.mapToAdminStandardResponse(classStandard));
         }
         return adminStandardResponseList;
@@ -188,12 +192,12 @@ public class AdminService {
     public List<AdminAddClassTeacherResponse> getTeacherListForAddClassroom() {
         List<Teacher> teacherList = teacherRepository.findAll();
         List<AdminAddClassTeacherResponse> adminAddClassTeacherResponseList = new ArrayList<>();
-        for(Teacher teacher :teacherList){
+        for (Teacher teacher : teacherList) {
             Optional<ClassRoom> optionalClassRoom = classRoomRepository.findByTeacherUserClassRoom(teacher.getTeacherUser().getId());
-            if(optionalClassRoom.isPresent()){
+            if (optionalClassRoom.isPresent()) {
                 adminAddClassTeacherResponseList.add(teacherDto.mapToAdminAddClassTeacherResponse(teacher,
                         optionalClassRoom));
-            }else {
+            } else {
                 adminAddClassTeacherResponseList.add(teacherDto.mapToAdminAddClassTeacherResponse(teacher));
             }
         }
@@ -204,10 +208,10 @@ public class AdminService {
     public List<AdminStudentListForAttendanceResponse> getStudentListForAttendance(Long classId) {
         Optional<ClassRoom> optionalClassRoom = classRoomRepository.findById(classId);
         List<AdminStudentListForAttendanceResponse> adminStudentListForAttendanceResponseList = new ArrayList<>();
-        if(optionalClassRoom.isPresent()){
+        if (optionalClassRoom.isPresent()) {
             Optional<List<Student>> optionalStudentList = studentRepository.findByClassRoom(optionalClassRoom.get().getId());
-            for(Student student :optionalStudentList.get()){
-                adminStudentListForAttendanceResponseList.add(studentDto.mapToAdminStudentListForAttendanceResponse(student,optionalClassRoom.get()));
+            for (Student student : optionalStudentList.get()) {
+                adminStudentListForAttendanceResponseList.add(studentDto.mapToAdminStudentListForAttendanceResponse(student, optionalClassRoom.get()));
             }
             return adminStudentListForAttendanceResponseList;
         }
@@ -215,13 +219,67 @@ public class AdminService {
     }
 
     public Integer getTodayPresentData() {
-        int count =0;
+        int count = 0;
         Optional<List<AttendanceRegister>> optionalAttendanceRegister = attendanceRegisterRepository.findByTodayDate();
-        if(optionalAttendanceRegister.isPresent()){
-            for(AttendanceRegister attendanceRegister : optionalAttendanceRegister.get()){
-                count +=1;
+        if (optionalAttendanceRegister.isPresent()) {
+            for (AttendanceRegister attendanceRegister : optionalAttendanceRegister.get()) {
+                count += 1;
             }
         }
         return count;
+    }
+
+    public StudentDetailReportResponse getStudentDetailReport(Long userId) {
+        int assignmentCount = 0;
+        int assignmentPassed = 0;
+        int assignmentCompleted = 0;
+
+        StudentDetailReportResponse studentDetailReportResponse = new StudentDetailReportResponse();
+        Optional<Student> optionalStudent = studentRepository.findByUserIdForApprove(userId);
+        if (optionalStudent.isPresent()) {
+            Parent parent = parentRepository.findByStudentUserId(userId);
+            Optional<Address> optionalAddress = addressRepository.findById(parent.getAddress().getId());
+            Optional<ClassRoom> optionalClassRoom = classRoomRepository.findById(optionalStudent.get().getClassRoom().getId());
+            Optional<List<Assignment>> optionalAssignments = assignmentRepository.findByClassRoomId(optionalStudent.get().getClassRoom().getId());
+            for (Assignment assignment : optionalAssignments.get()) {
+                Optional<AssignmentGrade> optionalAssignmentGrade = assignmentGradeRepository.findByStudentUserAssignmentGradeAndAssignment(assignment.getId(), optionalStudent.get().getStudentUser().getId());
+                if (optionalAssignmentGrade.isPresent()) {
+                    assignmentCompleted+=1;
+                    if (assignment.getMinScore() > optionalAssignmentGrade.get().getMarksObtained()) {
+                        assignmentPassed+=1;
+                    }
+                }
+                assignmentCount+=1;
+            }
+            if (optionalAddress.isPresent() && optionalClassRoom.isPresent()) {
+                studentDetailReportResponse.setFirstName(optionalStudent.get().getFirstName());
+                studentDetailReportResponse.setLastName(optionalStudent.get().getLastname());
+                studentDetailReportResponse.setGender(optionalStudent.get().getGender());
+                studentDetailReportResponse.setName(optionalStudent.get().getFirstName());
+                studentDetailReportResponse.setClassId(optionalClassRoom.get().getId());
+                studentDetailReportResponse.setClassName(optionalClassRoom.get().getClassStandard().getStandard());
+                studentDetailReportResponse.setStatus(optionalStudent.get().getStudentStatus().getStatus());
+                studentDetailReportResponse.setJoinedDate(String.valueOf(optionalStudent.get().getDateOfJoin()));
+                studentDetailReportResponse.setStudentId(optionalStudent.get().getStudentUser().getId());
+                studentDetailReportResponse.setMotherName(parent.getMotherName());
+                studentDetailReportResponse.setFatherName(parent.getFatherName());
+                studentDetailReportResponse.setMotherPhoneNumber(parent.getMotherPhoneNumber());
+                studentDetailReportResponse.setMotherOccupation(parent.getMotherOccupation());
+                studentDetailReportResponse.setFatherPhoneNumber(parent.getFatherPhoneNumber());
+                studentDetailReportResponse.setFatherOccupation(parent.getFatherOccupation());
+                studentDetailReportResponse.setDoorNumber(optionalAddress.get().getDoorNum());
+                studentDetailReportResponse.setStreet(optionalAddress.get().getStreet());
+                studentDetailReportResponse.setAddressLine(optionalAddress.get().getAddrLine());
+                studentDetailReportResponse.setCity(optionalAddress.get().getCity());
+                studentDetailReportResponse.setState(optionalAddress.get().getState());
+                studentDetailReportResponse.setPinCode(optionalAddress.get().getPincode());
+                studentDetailReportResponse.setAssignmentsAssigned(assignmentCount);
+                studentDetailReportResponse.setAssignmentsPassed(assignmentPassed);
+                studentDetailReportResponse.setAssignmentsCompleted(assignmentCompleted);
+            }
+
+        }
+
+        return studentDetailReportResponse;
     }
 }

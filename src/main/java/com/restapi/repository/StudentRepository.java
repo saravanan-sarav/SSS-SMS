@@ -24,4 +24,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("SELECT s FROM Student s INNER JOIN s.studentStatus ss INNER JOIN s.classRoom sc WHERE ss.id=2 AND sc.id=?1")
     Optional<List<Student>> findByClassRoomId(Long classId);
+
+    @Query("SELECT count(s) FROM Student s INNER JOIN s.studentStatus ss WHERE ss.id=2")
+    List<Long> ActiveStudentCount();
+
 }

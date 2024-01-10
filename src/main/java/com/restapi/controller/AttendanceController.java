@@ -3,6 +3,7 @@ package com.restapi.controller;
 import com.restapi.model.AttendanceRegister;
 import com.restapi.model.ClassRoom;
 import com.restapi.request.AttendanceRequest;
+import com.restapi.response.AttendanceCountResponse;
 import com.restapi.response.AttendanceResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.response.teacher.TeacherStudentAttendanceResponse;
@@ -44,6 +45,13 @@ public class AttendanceController {
     public ResponseEntity<APIResponse> markAttendance(@RequestBody AttendanceRequest attendanceRequest){
         AttendanceRegister attendanceRegister = attendanceService.markAttendanceForStudent(attendanceRequest);
         apiResponse.setData(null);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @GetMapping("/count")
+    public ResponseEntity<APIResponse> getAttendancePercentageCount(){
+        AttendanceCountResponse attendanceCountResponse = attendanceService.getAttendancePercentageCount();
+        apiResponse.setData(attendanceCountResponse);
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

@@ -27,4 +27,7 @@ public interface AttendanceRegisterRepository extends JpaRepository<AttendanceRe
 
     @Query("SELECT att FROM AttendanceRegister att WHERE att.date=CURRENT_DATE")
    Optional<List<AttendanceRegister>> findByTodayDate();
+
+    @Query("SELECT count(att) FROM AttendanceRegister att WHERE att.date=CURRENT_DATE")
+    List<Long> findByTodayDateCount();
 }

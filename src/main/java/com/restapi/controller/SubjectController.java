@@ -28,5 +28,13 @@ public class SubjectController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<APIResponse> getTeacherCount() {
+        Object teacherCountResponseList = subjectService.getTeacherCount();
+        apiResponse.setData(teacherCountResponseList);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
 
 }
