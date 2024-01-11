@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -21,5 +22,5 @@ public class LeaveApplyResponse {
     private LocalTime toTime;
     private String comments;
     private String leaveStatus;
-    private LocalDate applyDate;
+    private LocalDateTime applyDate;
 }

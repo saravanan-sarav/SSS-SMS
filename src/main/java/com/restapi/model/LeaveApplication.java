@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -28,7 +29,6 @@ public class LeaveApplication {
     private LocalTime fromTime;
     private LocalTime toTime;
 
-    @Column(nullable = false)
     private LocalDate toDate;
 
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class LeaveApplication {
 
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDate applyDate;
+    private LocalDateTime applyDate;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = false)
@@ -49,4 +49,8 @@ public class LeaveApplication {
     @ManyToOne
     @JoinColumn(name = "leave_status_id", referencedColumnName = "id", nullable = false)
     private LeaveStatus leaveStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "leave_type_id", referencedColumnName = "id", nullable = false)
+    private LeaveType leaveType;
 }

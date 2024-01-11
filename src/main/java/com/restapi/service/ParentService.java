@@ -72,6 +72,9 @@ public class ParentService {
     @Autowired
     private LeaveApplicationRepository leaveApplicationRepository;
 
+    @Autowired
+    private LeaveTypeRepository leaveTypeRepository;
+
 
     public Parent findById(Long id) {
         Optional<Parent> parent = parentRepository.findByUserId(id);
@@ -121,8 +124,9 @@ public class ParentService {
         if (optionalParent.isPresent()) {
             Optional<Student> optionalStudent = studentRepository.findByUserId(leaveApplyRequest.getStudentUserId());
             if (optionalStudent.isPresent()) {
-                Optional<LeaveStatus> leaveStatus = leaveStatusRepository.findById(leaveApplyRequest.getLeaveStatusId());
-                if (leaveStatus.isPresent()) {
+                Optional<LeaveStatus> leaveStatus = leaveStatusRepository.findById(1L);
+                Optional<LeaveType> optionalLeaveType = leaveTypeRepository.findById(leaveApplyRequest.getLeaveTypeId());
+                if (leaveStatus.isPresent() && optionalLeaveType.isPresent()) {
                     LeaveApplication leaveApplication = new LeaveApplication();
                     leaveApplication.setId(leaveApplyRequest.getId());
                     leaveApplication.setLeaveStatus(leaveStatus.get());
@@ -133,6 +137,7 @@ public class ParentService {
                     leaveApplication.setFromTime(leaveApplyRequest.getFromTime());
                     leaveApplication.setToTime(leaveApplyRequest.getToTime());
                     leaveApplication.setComments(leaveApplyRequest.getComments());
+                    leaveApplication.setLeaveType(optionalLeaveType.get());
                     leaveApplication = leaveApplicationRepository.save(leaveApplication);
                     return leaveDto.mapToLeaveApplyResponse(leaveApplication, optionalStudent.get());
                 } else {

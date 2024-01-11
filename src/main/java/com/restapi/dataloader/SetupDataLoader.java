@@ -56,7 +56,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private LeaveStatusRepository leaveStatusRepository;
 
-    @Autowired LeaveApplicationRepository leaveApplicationRepository;
+    @Autowired
+    private LeaveApplicationRepository leaveApplicationRepository;
+
+    @Autowired
+    private LeaveTypeRepository leaveTypeRepository;
 
     @Override
     @Transactional
@@ -72,7 +76,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 //        Create Admin
 
-        AppUser adminUser = createUserIfNotFound("admin@123","admin","admin",adminRole);
+        AppUser adminUser = createUserIfNotFound("admin@123", "admin", "admin", adminRole);
 
 //        Create Student Status
         StudentStatus studentStatusPending = createStudentStatusIfNotFound(StudentStatus.PENDING);
@@ -107,40 +111,40 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         ClassStandard plusTwoClass = createClassStandardIfNotFound(ClassStandard.PLUS_TWO);
 
 //        Create Teacher with Subjects
-        AppUser teacherAppUser = createUserIfNotFound("tamilteacher@123","tamil","Meena",teacherRole);
-        Address addressTeacher = createAddressIfNotFound("18/1","MGR Street","taramani","chennai","tamilNadu",600113l);
-        Teacher tamilTeacher = createTeacherIfNotFound("Meena","S","8807456056","meena@gmail.com","female","1977-11-10",teacherAppUser,addressTeacher,subjectTamil);
+        AppUser teacherAppUser = createUserIfNotFound("tamilteacher@123", "tamil", "Meena", teacherRole);
+        Address addressTeacher = createAddressIfNotFound("18/1", "MGR Street", "taramani", "chennai", "tamilNadu", 600113l);
+        Teacher tamilTeacher = createTeacherIfNotFound("Meena", "S", "8807456056", "meena@gmail.com", "female", "1977-11-10", teacherAppUser, addressTeacher, subjectTamil);
 
 
-        AppUser teacherEnglishAppUser = createUserIfNotFound("englishteacher@123","english","Raj",teacherRole);
-        Address addressEnglishTeacher = createAddressIfNotFound("20","Gohulam Street","AnnaNagar","Chennai","tamilNadu",600100l);
-        Teacher englishTeacher = createTeacherIfNotFound("Raj","S","6379888041","raj@gmail.com","male","1977-01-10",teacherEnglishAppUser,addressEnglishTeacher,subjectEnglish);
+        AppUser teacherEnglishAppUser = createUserIfNotFound("englishteacher@123", "english", "Raj", teacherRole);
+        Address addressEnglishTeacher = createAddressIfNotFound("20", "Gohulam Street", "AnnaNagar", "Chennai", "tamilNadu", 600100l);
+        Teacher englishTeacher = createTeacherIfNotFound("Raj", "S", "6379888041", "raj@gmail.com", "male", "1977-01-10", teacherEnglishAppUser, addressEnglishTeacher, subjectEnglish);
 
 
-        AppUser teacherMathsAppUser = createUserIfNotFound("mathsteacher@123","maths","John",teacherRole);
-        Address addressMathsTeacher = createAddressIfNotFound("45","Mahatma Street","Anna nagar","chennai","tamilNadu",600045l);
-        Teacher mathsTeacher = createTeacherIfNotFound("John","S","9042221661","john@gmail.com","male","1989-11-10",teacherMathsAppUser,addressMathsTeacher,subjectMaths);
+        AppUser teacherMathsAppUser = createUserIfNotFound("mathsteacher@123", "maths", "John", teacherRole);
+        Address addressMathsTeacher = createAddressIfNotFound("45", "Mahatma Street", "Anna nagar", "chennai", "tamilNadu", 600045l);
+        Teacher mathsTeacher = createTeacherIfNotFound("John", "S", "9042221661", "john@gmail.com", "male", "1989-11-10", teacherMathsAppUser, addressMathsTeacher, subjectMaths);
 
 
-        AppUser teacherScienceAppUser = createUserIfNotFound("scienceteacher@123","science","rajesh",teacherRole);
-        Address addressScienceTeacher = createAddressIfNotFound("994/2","APJ Street","CMBT","chennai","tamilNadu",600034l);
-        Teacher scienceTeacher = createTeacherIfNotFound("rajesh","S","9445542262","rajesh@gmail.com","male","1990-01-12",teacherScienceAppUser,addressScienceTeacher,subjectScience);
+        AppUser teacherScienceAppUser = createUserIfNotFound("scienceteacher@123", "science", "rajesh", teacherRole);
+        Address addressScienceTeacher = createAddressIfNotFound("994/2", "APJ Street", "CMBT", "chennai", "tamilNadu", 600034l);
+        Teacher scienceTeacher = createTeacherIfNotFound("rajesh", "S", "9445542262", "rajesh@gmail.com", "male", "1990-01-12", teacherScienceAppUser, addressScienceTeacher, subjectScience);
 
 
-        AppUser teacherSocialAppUser = createUserIfNotFound("socialteacher@123","social","Guru",teacherRole);
-        Address addressSocialTeacher = createAddressIfNotFound("65","stalin Street","gopal nagar","chennai","tamilNadu",600001l);
-        Teacher socialTeacher = createTeacherIfNotFound("Guru","G","9554221743","guru@gmail.com","male","1977-11-10",teacherSocialAppUser,addressSocialTeacher,subjectSocial);
+        AppUser teacherSocialAppUser = createUserIfNotFound("socialteacher@123", "social", "Guru", teacherRole);
+        Address addressSocialTeacher = createAddressIfNotFound("65", "stalin Street", "gopal nagar", "chennai", "tamilNadu", 600001l);
+        Teacher socialTeacher = createTeacherIfNotFound("Guru", "G", "9554221743", "guru@gmail.com", "male", "1977-11-10", teacherSocialAppUser, addressSocialTeacher, subjectSocial);
 
 
 //        Create classroom
-        ClassRoom classRoom = createClassRoomIfNotFound(sixthClass,teacherAppUser,teacherAppUser,teacherEnglishAppUser,teacherMathsAppUser,teacherScienceAppUser,teacherSocialAppUser);
+        ClassRoom classRoom = createClassRoomIfNotFound(sixthClass, teacherAppUser, teacherAppUser, teacherEnglishAppUser, teacherMathsAppUser, teacherScienceAppUser, teacherSocialAppUser);
 
 //        Create ParentAndTeacher
-        AppUser studentAppUser = createUserIfNotFound("sarav@2001","2001","Saravanan",studentRole);
-        AppUser parentAppUser = createUserIfNotFound("meena@2001","2001","Meena S",parentRole);
-        Address parentAddress = createAddressIfNotFound("45","Mahatma Street","Anna nagar","chennai","tamilNadu",600045l);
-        Student student = createStudentIfNotFound("Saravanan","S","2001-10-04","Male",studentAppUser,classRoom,sixthClass,studentStatusPending);
-        Parent parent = createParentIfNotFound("Meena S","8807456056","houseWife","Subramani G","9042241331","Labour","meena@gmail.com",parentAppUser,parentAddress,studentAppUser);
+        AppUser studentAppUser = createUserIfNotFound("sarav@2001", "2001", "Saravanan", studentRole);
+        AppUser parentAppUser = createUserIfNotFound("meena@2001", "2001", "Meena S", parentRole);
+        Address parentAddress = createAddressIfNotFound("45", "Mahatma Street", "Anna nagar", "chennai", "tamilNadu", 600045l);
+        Student student = createStudentIfNotFound("Saravanan", "S", "2001-10-04", "Male", studentAppUser, classRoom, sixthClass, studentStatusPending);
+        Parent parent = createParentIfNotFound("Meena S", "8807456056", "houseWife", "Subramani G", "9042241331", "Labour", "meena@gmail.com", parentAppUser, parentAddress, studentAppUser);
 
         alreadySetup = true;
 
@@ -148,11 +152,26 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         LeaveStatus leaveStatusApproved = createLeaveStatusIfNotFound(LeaveStatus.APPROVE);
         LeaveStatus leaveStatusReject = createLeaveStatusIfNotFound(LeaveStatus.REJECTED);
 
+        LeaveType leaveTypeForLeave = createLeaveTypeIfNotFound(LeaveType.LEAVE);
+        LeaveType leaveTypeForPermission = createLeaveTypeIfNotFound(LeaveType.PERMISSION);
+
+
+    }
+
+    private LeaveType createLeaveTypeIfNotFound(String type) {
+        Optional<LeaveType> optionalLeaveType = leaveTypeRepository.findByLeaveType(type);
+        if (optionalLeaveType.isEmpty()) {
+            LeaveType leaveType = new LeaveType();
+            leaveType.setLeaveType(type);
+            leaveType = leaveTypeRepository.save(leaveType);
+            return leaveType;
+        }
+        return null;
     }
 
     private LeaveStatus createLeaveStatusIfNotFound(String status) {
         Optional<LeaveStatus> optionalLeaveStatus = leaveStatusRepository.findByLeaveStatus(status);
-        if(optionalLeaveStatus.isEmpty()){
+        if (optionalLeaveStatus.isEmpty()) {
             LeaveStatus leaveStatus = new LeaveStatus();
             leaveStatus.setLeaveStatus(status);
             return leaveStatusRepository.save(leaveStatus);
@@ -163,7 +182,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private Parent createParentIfNotFound(String motherName, String motherPhoneNumber, String motherOccupation, String fatherName, String fatherPhoneNumber, String fatherOccupation, String email, AppUser parentAppUser, Address parentAddress, AppUser studentAppUser) {
         System.out.println(org.hibernate.Version.getVersionString());
         Optional<Parent> OptionalParent = parentRepository.findByUserId(parentAppUser.getId());
-        if(!OptionalParent.isPresent()){
+        if (OptionalParent.isEmpty()) {
             Parent parent = new Parent();
             parent.setMotherName(motherName);
             parent.setMotherPhoneNumber(motherPhoneNumber);
@@ -183,7 +202,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private Student createStudentIfNotFound(String firstName, String lastName, String dateOfBirth, String gender, AppUser studentAppUser, ClassRoom classRoom, ClassStandard sixthClass, StudentStatus studentStatusActive) {
         Optional<Student> optionalStudent = studentRepository.findByUserIdForApprove(studentAppUser.getId());
-        if(!optionalStudent.isPresent()){
+        if (!optionalStudent.isPresent()) {
             Student student = new Student();
             student.setFirstName(firstName);
             student.setLastname(lastName);
@@ -200,8 +219,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private ClassRoom createClassRoomIfNotFound(ClassStandard standard, AppUser classTeacher, AppUser tamilTeacher, AppUser englishTeacher, AppUser mathsTeacher, AppUser scienceTeacher, AppUser socialTeacher) {
         Optional<ClassRoom> classRoomFetch = classRoomRepository.findByClassStandard(standard.getId());
-        if(!classRoomFetch.isPresent()){
-           ClassRoom classRoom = new ClassRoom();
+        if (!classRoomFetch.isPresent()) {
+            ClassRoom classRoom = new ClassRoom();
             classRoom.setClassStandard(standard);
             classRoom.setTeacherUserClassRoom(classTeacher);
             classRoom.setTamilTeacherUser(tamilTeacher);
@@ -215,11 +234,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return classRoomFetch.get();
     }
 
-    private Teacher createTeacherIfNotFound(String firstName, String lastName, String phoneNumber, String email,String gender, String dateOfBirth, AppUser teacherAppUser, Address address, Subject subject) {
-        if(teacherAppUser.getId()!=null){
+    private Teacher createTeacherIfNotFound(String firstName, String lastName, String phoneNumber, String email, String gender, String dateOfBirth, AppUser teacherAppUser, Address address, Subject subject) {
+        if (teacherAppUser.getId() != null) {
             Optional<Teacher> optionalTeacher = teacherRepository.findByUserId(teacherAppUser.getId());
             Teacher teacher = null;
-            if(optionalTeacher.isEmpty()){
+            if (optionalTeacher.isEmpty()) {
                 teacher = new Teacher();
                 teacher.setFirstName(firstName);
                 teacher.setLastname(lastName);
@@ -231,7 +250,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 teacher.setSubject(subject);
                 teacher.setTeacherUser(teacherAppUser);
                 teacher = teacherRepository.save(teacher);
-        }
+            }
             return teacher;
 
         }
@@ -252,7 +271,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private ClassStandard createClassStandardIfNotFound(String standard) {
         ClassStandard classStandard = classStandardRepository.findByStandard(standard);
-        if(classStandard == null){
+        if (classStandard == null) {
             classStandard = new ClassStandard();
             classStandard.setStandard(standard);
             classStandard = classStandardRepository.save(classStandard);
@@ -262,7 +281,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private AssignmentType createAssignmentTypeIfNotFound(String type) {
         AssignmentType assignmentType = assignmentTypeRepository.findByName(type);
-        if(assignmentType ==null){
+        if (assignmentType == null) {
             assignmentType = new AssignmentType();
             assignmentType.setType(type);
             assignmentType = assignmentTypeRepository.save(assignmentType);
@@ -273,7 +292,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private Subject createSubjectIfNotFound(String subjectName) {
         Subject subject = subjectRepository.findByName(subjectName);
-        if(subject == null){
+        if (subject == null) {
             subject = new Subject();
             subject.setSubject(subjectName);
             subject = subjectRepository.save(subject);

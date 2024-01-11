@@ -18,6 +18,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class LeaveApplyRequest {
     private Long id;
+    private Long leaveTypeId;
     private LocalDate fromDate;
     private LocalDate toDate;
     private LocalTime fromTime;
@@ -25,5 +26,4 @@ public class LeaveApplyRequest {
     private String comments;
     private Long parentUserId;
     private Long studentUserId;
-    private Long leaveStatusId;
 }
