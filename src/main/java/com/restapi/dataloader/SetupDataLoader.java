@@ -61,6 +61,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Autowired
     private LeaveTypeRepository leaveTypeRepository;
+    @Autowired
+    private LeaveReasonRepository leaveReasonRepository;
 
     @Override
     @Transactional
@@ -146,7 +148,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Student student = createStudentIfNotFound("Saravanan", "S", "2001-10-04", "Male", studentAppUser, classRoom, sixthClass, studentStatusPending);
         Parent parent = createParentIfNotFound("Meena S", "8807456056", "houseWife", "Subramani G", "9042241331", "Labour", "meena@gmail.com", parentAppUser, parentAddress, studentAppUser);
 
-        alreadySetup = true;
 
         LeaveStatus leaveStatusPending = createLeaveStatusIfNotFound(LeaveStatus.PENDING);
         LeaveStatus leaveStatusApproved = createLeaveStatusIfNotFound(LeaveStatus.APPROVE);
@@ -155,7 +156,26 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         LeaveType leaveTypeForLeave = createLeaveTypeIfNotFound(LeaveType.LEAVE);
         LeaveType leaveTypeForPermission = createLeaveTypeIfNotFound(LeaveType.PERMISSION);
 
+        LeaveReason leaveReasonSickLeave = createLeaveReasonIfNotFound(LeaveReason.SICK_LEAVE);
+        LeaveReason leaveReasonMedicalLeave = createLeaveReasonIfNotFound(LeaveReason.MEDICAL_LEAVE);
+        LeaveReason leaveReasonFamilyVacation = createLeaveReasonIfNotFound(LeaveReason.FAMILY_VACATION);
+        LeaveReason leaveReasonOthers = createLeaveReasonIfNotFound(LeaveReason.OTHERS);
+        LeaveReason leaveReasonReligiousFunction = createLeaveReasonIfNotFound(LeaveReason.RELIGIOUS_FUNCTION);
+        LeaveReason leaveReasonOnDuty = createLeaveReasonIfNotFound(LeaveReason.ON_DUTY);
+        LeaveReason leaveReasonCasualLeave = createLeaveReasonIfNotFound(LeaveReason.CASUAL_LEAVE);
+        alreadySetup = true;
 
+    }
+
+    private LeaveReason createLeaveReasonIfNotFound(String reason) {
+        Optional<LeaveReason> optionalLeaveReason = leaveReasonRepository.findByReason(reason);
+        if (optionalLeaveReason.isEmpty()) {
+            LeaveReason leaveReason = new LeaveReason();
+            leaveReason.setReason(reason);
+            leaveReason = leaveReasonRepository.save(leaveReason);
+            return leaveReason;
+        }
+        return null;
     }
 
     private LeaveType createLeaveTypeIfNotFound(String type) {

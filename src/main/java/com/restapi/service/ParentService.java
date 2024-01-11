@@ -1,6 +1,5 @@
 package com.restapi.service;
 
-import com.restapi.controller.LeaveController;
 import com.restapi.dto.*;
 import com.restapi.exception.common.ResourceNotFoundException;
 import com.restapi.model.*;
@@ -10,6 +9,7 @@ import com.restapi.request.leave.LeaveApplyRequest;
 import com.restapi.response.ParentResponse;
 import com.restapi.response.admin.AdminAssignmentResponse;
 import com.restapi.response.leave.LeaveApplyResponse;
+import com.restapi.response.leave.LeaveReasonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,8 @@ public class ParentService {
 
     @Autowired
     private LeaveTypeRepository leaveTypeRepository;
+    @Autowired
+    private LeaveReasonRepository leaveReasonRepository;
 
 
     public Parent findById(Long id) {
@@ -126,7 +129,8 @@ public class ParentService {
             if (optionalStudent.isPresent()) {
                 Optional<LeaveStatus> leaveStatus = leaveStatusRepository.findById(1L);
                 Optional<LeaveType> optionalLeaveType = leaveTypeRepository.findById(leaveApplyRequest.getLeaveTypeId());
-                if (leaveStatus.isPresent() && optionalLeaveType.isPresent()) {
+                Optional<LeaveReason> optionalLeaveReason = leaveReasonRepository.findById(leaveApplyRequest.getLeaveReasonId());
+                if (leaveStatus.isPresent() && optionalLeaveType.isPresent() && optionalLeaveReason.isPresent()) {
                     LeaveApplication leaveApplication = new LeaveApplication();
                     leaveApplication.setId(leaveApplyRequest.getId());
                     leaveApplication.setLeaveStatus(leaveStatus.get());
@@ -138,6 +142,8 @@ public class ParentService {
                     leaveApplication.setToTime(leaveApplyRequest.getToTime());
                     leaveApplication.setComments(leaveApplyRequest.getComments());
                     leaveApplication.setLeaveType(optionalLeaveType.get());
+                    leaveApplication.setLeaveType(optionalLeaveType.get());
+                    leaveApplication.setLeaveReason(optionalLeaveReason.get());
                     leaveApplication = leaveApplicationRepository.save(leaveApplication);
                     return leaveDto.mapToLeaveApplyResponse(leaveApplication, optionalStudent.get());
                 } else {
@@ -151,7 +157,37 @@ public class ParentService {
         }
     }
 
+    public List<LeaveReasonResponse> getLeaveReason() {
+        List<LeaveReasonResponse> leaveReasonResponseList = new ArrayList<>();
+        List<LeaveReason> optionalLeaveReasonList = leaveReasonRepository.findAll();
+        for (LeaveReason leaveReason : optionalLeaveReasonList) {
+            LeaveReasonResponse leaveReasonResponse = new LeaveReasonResponse();
+            leaveReasonResponse.setId(leaveReason.getId());
+            leaveReasonResponse.setReason(leaveReason.getReason());
+            leaveReasonResponseList.add(leaveReasonResponse);
+        }
+        return leaveReasonResponseList;
+    }
+
     public List<AdminAssignmentResponse> getStudentLeaveList(long studentUserId) {
         return null;
+    }
+
+    public LeaveApplyResponse getRecentLeaveApplication(Long studentUserId) {
+        LeaveApplyResponse leaveApplyResponse = new LeaveApplyResponse();
+        Optional<List<LeaveApplication>> optionalLeaveApplicationList = leaveApplicationRepository.findByStudentId(studentUserId);
+        System.out.println(optionalLeaveApplicationList.get());
+        for(LeaveApplication leaveApplication:optionalLeaveApplicationList.get()){
+            leaveApplyResponse.setApplyDate(leaveApplication.getApplyDate());
+            leaveApplyResponse.setFromDate(leaveApplication.getFromDate());
+            leaveApplyResponse.setToDate(leaveApplication.getToDate());
+            leaveApplyResponse.setFromTime(leaveApplication.getFromTime());
+            leaveApplyResponse.setToTime(leaveApplication.getToTime());
+            leaveApplyResponse.setComments(leaveApplication.getComments());
+            leaveApplyResponse.setLeaveReason(leaveApplication.getLeaveReason().getReason());
+            leaveApplyResponse.setLeaveType(leaveApplication.getLeaveType().getLeaveType());
+            leaveApplyResponse.setLeaveStatus(leaveApplication.getLeaveStatus().getLeaveStatus());
+        }
+        return leaveApplyResponse;
     }
 }

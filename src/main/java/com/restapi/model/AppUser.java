@@ -88,7 +88,7 @@ public class AppUser {
     @ManyToMany(mappedBy = "studentUserAssignmentGrade")
     private List<AssignmentGrade> assignmentGradeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "LeaveApplicationStudent")
+    @OneToMany(mappedBy = "leaveApplicationStudent")
     private List<LeaveApplication> leaveApplicationForStudent = new ArrayList<>();
 
     @OneToMany(mappedBy = "leaveApplicationParent")

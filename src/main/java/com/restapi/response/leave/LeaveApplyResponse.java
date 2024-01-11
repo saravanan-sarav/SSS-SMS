@@ -22,5 +22,7 @@ public class LeaveApplyResponse {
     private LocalTime toTime;
     private String comments;
     private String leaveStatus;
+    private String leaveReason;
+    private String leaveType;
     private LocalDateTime applyDate;
 }

@@ -39,12 +39,12 @@ public class LeaveApplication {
     private LocalDateTime applyDate;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "parent_user_id", referencedColumnName = "id", nullable = false)
     private AppUser leaveApplicationParent;
 
     @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = false)
-    private AppUser LeaveApplicationStudent;
+    @JoinColumn(name = "student_user_id", referencedColumnName = "id", nullable = false)
+    private AppUser leaveApplicationStudent;
 
     @ManyToOne
     @JoinColumn(name = "leave_status_id", referencedColumnName = "id", nullable = false)
@@ -53,4 +53,8 @@ public class LeaveApplication {
     @ManyToOne
     @JoinColumn(name = "leave_type_id", referencedColumnName = "id", nullable = false)
     private LeaveType leaveType;
+
+    @ManyToOne
+    @JoinColumn(name = "leave_reason_id", referencedColumnName = "id", nullable = false)
+    private LeaveReason leaveReason;
 }

@@ -19,6 +19,8 @@ public class LeaveDto {
         leaveApplyResponse.setFromTime(leaveApplication.getFromTime());
         leaveApplyResponse.setToTime(leaveApplication.getToTime());
         leaveApplyResponse.setComments(leaveApplication.getComments());
+        leaveApplyResponse.setLeaveReason(leaveApplication.getLeaveReason().getReason());
+        leaveApplyResponse.setLeaveType(leaveApplication.getLeaveType().getLeaveType());
         leaveApplyResponse.setLeaveStatus(leaveApplication.getLeaveStatus().getLeaveStatus());
         return leaveApplyResponse;
     }

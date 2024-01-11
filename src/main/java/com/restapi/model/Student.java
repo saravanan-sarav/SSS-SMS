@@ -49,7 +49,7 @@ public class Student {
     @JoinColumn(name = "class_Id", referencedColumnName = "id")
     private ClassRoom classRoom;
 
-    @OneToMany(mappedBy = "LeaveApplicationStudent")
+    @OneToMany(mappedBy = "leaveApplicationStudent")
     private List<LeaveApplication> leaveApplicationList= new ArrayList<>();
 
 }

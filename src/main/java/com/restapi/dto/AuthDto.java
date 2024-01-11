@@ -71,8 +71,8 @@ public class AuthDto {
             Optional<Parent> parent = parentRepository.findByUserId(appUser.getId());
             if(parent.isPresent()){
                 Optional<Student> student = studentRepository.findByUserIdForApprove(parent.get().getStudentUserForParent().getId());
-                authResponse.setStudentId(student.get().getStudentUser().getId());
                 if(student.isPresent()) {
+                    authResponse.setStudentId(student.get().getStudentUser().getId());
                     authResponse.setId(appUser.getId());
                     authResponse.setUsername(appUser.getUsername());
                     authResponse.setName(appUser.getName());
