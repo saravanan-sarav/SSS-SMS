@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,4 +19,7 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, Long> {
 
     @Query("SELECT c FROM ClassRoom c INNER JOIN c.classStandard ct WHERE ct.id=?1")
     Optional<ClassRoom> findByStandardId(Long standardId);
+
+    @Query("SELECT c FROM ClassRoom c")
+    Optional<List<ClassRoom>> findClassRoomAll();
 }

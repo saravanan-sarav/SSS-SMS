@@ -239,7 +239,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     private ClassRoom createClassRoomIfNotFound(ClassStandard standard, AppUser classTeacher, AppUser tamilTeacher, AppUser englishTeacher, AppUser mathsTeacher, AppUser scienceTeacher, AppUser socialTeacher) {
         Optional<ClassRoom> classRoomFetch = classRoomRepository.findByClassStandard(standard.getId());
-        if (!classRoomFetch.isPresent()) {
+        if (classRoomFetch.isEmpty()) {
             ClassRoom classRoom = new ClassRoom();
             classRoom.setClassStandard(standard);
             classRoom.setTeacherUserClassRoom(classTeacher);

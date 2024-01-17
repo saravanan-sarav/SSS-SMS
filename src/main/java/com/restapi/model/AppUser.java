@@ -58,23 +58,23 @@ public class AppUser {
     private Parent parentStudentUserId;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "tamilTeacherUser")
+    @OneToMany(mappedBy = "tamilTeacherUser", cascade = CascadeType.ALL)
     private List<ClassRoom> classRoomTamilTeacher;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "englishTeacherUser")
+    @OneToMany(mappedBy = "englishTeacherUser", cascade = CascadeType.ALL)
     private List<ClassRoom> classRoomEnglishTeacher;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "mathsTeacherUser")
+    @OneToMany(mappedBy = "mathsTeacherUser", cascade = CascadeType.ALL)
     private List<ClassRoom> classRoomMathsTeacher;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "scienceTeacherUser")
+    @OneToMany(mappedBy = "scienceTeacherUser", cascade = CascadeType.ALL)
     private List<ClassRoom> classRoomScienceTeacher;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "socialTeacherUser")
+    @OneToMany(mappedBy = "socialTeacherUser", cascade = CascadeType.ALL)
     private List<ClassRoom> classRoomSocialTeacher;
 
     @JsonIgnore
@@ -82,7 +82,7 @@ public class AppUser {
     private List<AttendanceRegister> attendanceRegister = new ArrayList<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "teacherUserClassRoom")
+    @OneToOne(mappedBy = "teacherUserClassRoom", cascade = CascadeType.ALL)
     private ClassRoom classRoom;
 
     @ManyToMany(mappedBy = "studentUserAssignmentGrade")

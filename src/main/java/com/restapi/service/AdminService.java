@@ -165,17 +165,19 @@ public class AdminService {
     }
 
     public List<AdminClassRoomResponse> getAllClassRooms() {
-        List<ClassRoom> classRoomList = classRoomRepository.findAll();
+        Optional<List<ClassRoom>> classRoomList = classRoomRepository.findClassRoomAll();
         List<AdminClassRoomResponse> adminStudentResponseList = new ArrayList<>();
-        for (ClassRoom classRoom : classRoomList) {
-            Optional<Teacher> classTeacher = teacherRepository.findByUserId(classRoom.getTeacherUserClassRoom().getId());
-            Optional<Teacher> tamilTeacher = teacherRepository.findByUserId(classRoom.getTamilTeacherUser().getId());
-            Optional<Teacher> englishTeacher = teacherRepository.findByUserId(classRoom.getEnglishTeacherUser().getId());
-            Optional<Teacher> mathsTeacher = teacherRepository.findByUserId(classRoom.getMathsTeacherUser().getId());
-            Optional<Teacher> scienceTeacher = teacherRepository.findByUserId(classRoom.getScienceTeacherUser().getId());
-            Optional<Teacher> socialTeacher = teacherRepository.findByUserId(classRoom.getSocialTeacherUser().getId());
-            adminStudentResponseList.add(classRoomDto.mapToResponse
-                    (classRoom, classTeacher, tamilTeacher, englishTeacher, mathsTeacher, scienceTeacher, socialTeacher));
+        if (classRoomList.isPresent()) {
+            for (ClassRoom classRoom : classRoomList.get()) {
+                Optional<Teacher> classTeacher = teacherRepository.findByUserId(classRoom.getTeacherUserClassRoom().getId());
+                Optional<Teacher> tamilTeacher = teacherRepository.findByUserId(classRoom.getTamilTeacherUser().getId());
+                Optional<Teacher> englishTeacher = teacherRepository.findByUserId(classRoom.getEnglishTeacherUser().getId());
+                Optional<Teacher> mathsTeacher = teacherRepository.findByUserId(classRoom.getMathsTeacherUser().getId());
+                Optional<Teacher> scienceTeacher = teacherRepository.findByUserId(classRoom.getScienceTeacherUser().getId());
+                Optional<Teacher> socialTeacher = teacherRepository.findByUserId(classRoom.getSocialTeacherUser().getId());
+                adminStudentResponseList.add(classRoomDto.mapToResponse
+                        (classRoom, classTeacher, tamilTeacher, englishTeacher, mathsTeacher, scienceTeacher, socialTeacher));
+            }
         }
         return adminStudentResponseList;
     }
@@ -244,12 +246,12 @@ public class AdminService {
             for (Assignment assignment : optionalAssignments.get()) {
                 Optional<AssignmentGrade> optionalAssignmentGrade = assignmentGradeRepository.findByStudentUserAssignmentGradeAndAssignment(assignment.getId(), optionalStudent.get().getStudentUser().getId());
                 if (optionalAssignmentGrade.isPresent()) {
-                    assignmentCompleted+=1;
+                    assignmentCompleted += 1;
                     if (assignment.getMinScore() > optionalAssignmentGrade.get().getMarksObtained()) {
-                        assignmentPassed+=1;
+                        assignmentPassed += 1;
                     }
                 }
-                assignmentCount+=1;
+                assignmentCount += 1;
             }
             if (optionalAddress.isPresent() && optionalClassRoom.isPresent()) {
                 studentDetailReportResponse.setFirstName(optionalStudent.get().getFirstName());

@@ -30,7 +30,7 @@ public class ClassStandard {
     private String standard;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "classStandard")
+    @OneToOne(mappedBy = "classStandard", cascade = CascadeType.ALL)
     private ClassRoom classRoom;
 
 }

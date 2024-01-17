@@ -45,6 +45,9 @@ public class TeacherService {
     @Autowired
     private AssignmentDto assignmentDto;
 
+    @Autowired
+    private LeaveApplicationRepository leaveApplicationRepository;
+
     public TeacherProfileResponse findById(Long id) {
         Optional<Teacher> teacher = teacherRepository.findByUserId(id);
         return teacherDto.mapToTeacherProfileResponse(teacher.get());
@@ -127,5 +130,29 @@ public class TeacherService {
         }
 
         return assignmentGrade;
+    }
+
+    public List<TeacherLeaveDataResponse> findAllLeaveListByTeacherUserId(Long teacherUserId) {
+        Optional<Teacher> optionalTeacher = teacherRepository.findByUserId(teacherUserId);
+        if (optionalTeacher.isPresent()) {
+            List<TeacherLeaveDataResponse> teacherLeaveDataResponseList = new ArrayList<>();
+            Optional<ClassRoom> optionalClassRoom = classRoomRepository.findByTeacherUserClassRoom(teacherUserId);
+            if (optionalClassRoom.isPresent()) {
+                Optional<List<Student>> optionalStudentList = studentRepository.findByClassRoomId(optionalClassRoom.get().getId());
+                if (optionalStudentList.isPresent()) {
+                    for (Student student : optionalStudentList.get()) {
+                        Optional<List<LeaveApplication>> leaveApplicationList = leaveApplicationRepository.findByStudentId(student.getStudentUser().getId());
+                        if (leaveApplicationList.isPresent()) {
+                            for (LeaveApplication leaveApplication : leaveApplicationList.get()) {
+                                teacherLeaveDataResponseList.add(teacherDto.mapToTeacherLeaveDataResponse(leaveApplication, student));
+                            }
+                        }
+                    }
+                }
+            }
+            return teacherLeaveDataResponseList;
+        } else {
+            return null;
+        }
     }
 }

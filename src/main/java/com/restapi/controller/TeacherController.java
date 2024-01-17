@@ -69,4 +69,12 @@ public class TeacherController {
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/leave/all/{teacherUserId}")
+    public ResponseEntity<APIResponse> getLeaveListForTeacher(@PathVariable Long teacherUserId){
+        List<TeacherLeaveDataResponse> teacherLeaveDataResponseList  = teacherService.findAllLeaveListByTeacherUserId(teacherUserId);
+        apiResponse.setData(teacherLeaveDataResponseList);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

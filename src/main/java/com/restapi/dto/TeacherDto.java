@@ -8,6 +8,7 @@ import com.restapi.response.admin.AdminAddClassTeacherResponse;
 import com.restapi.response.admin.AdminStandardResponse;
 import com.restapi.response.admin.AdminTeacherResponse;
 import com.restapi.response.teacher.TeacherAssignmentResponse;
+import com.restapi.response.teacher.TeacherLeaveDataResponse;
 import com.restapi.response.teacher.TeacherProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -139,5 +140,23 @@ public class TeacherDto {
         adminAddClassTeacherResponse.setTeacherSubjectId(teacher.getSubject().getId());
 
         return  adminAddClassTeacherResponse;
+    }
+
+    public TeacherLeaveDataResponse mapToTeacherLeaveDataResponse(LeaveApplication leaveApplication, Student student) {
+        TeacherLeaveDataResponse teacherLeaveDataResponse = new TeacherLeaveDataResponse();
+        teacherLeaveDataResponse.setId(leaveApplication.getId());
+        teacherLeaveDataResponse.setFirstName(student.getFirstName());
+        teacherLeaveDataResponse.setLastName(student.getLastname());
+        teacherLeaveDataResponse.setLeaveTypeId(leaveApplication.getLeaveType().getId());
+        teacherLeaveDataResponse.setLeaveType(leaveApplication.getLeaveType().getLeaveType());
+        teacherLeaveDataResponse.setAppliedDate(LocalDate.from(leaveApplication.getApplyDate()));
+        teacherLeaveDataResponse.setFromDate(leaveApplication.getFromDate());
+        teacherLeaveDataResponse.setToDate(leaveApplication.getToDate());
+        teacherLeaveDataResponse.setFromTime(leaveApplication.getFromTime());
+        teacherLeaveDataResponse.setToTime(leaveApplication.getToTime());
+        teacherLeaveDataResponse.setLeaveReason(leaveApplication.getLeaveReason().getReason());
+        teacherLeaveDataResponse.setComments(leaveApplication.getComments());
+        teacherLeaveDataResponse.setLeaveStatus(leaveApplication.getLeaveStatus().getId());
+        return teacherLeaveDataResponse;
     }
 }

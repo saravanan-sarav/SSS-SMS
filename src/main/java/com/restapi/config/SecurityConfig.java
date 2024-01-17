@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/api/admin/standard/all")
                 .permitAll()
+                .antMatchers("/api/classroom/all")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().httpBasic()
