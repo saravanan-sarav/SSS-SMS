@@ -9,6 +9,7 @@ import com.restapi.response.admin.AdminAssignmentResponse;
 import com.restapi.response.common.APIResponse;
 import com.restapi.response.leave.LeaveApplyResponse;
 import com.restapi.response.leave.LeaveReasonResponse;
+import com.restapi.response.leave.ParentLeaveDataResponse;
 import com.restapi.service.ParentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,13 @@ public class LeaveController {
     @GetMapping("/recent/{StudentUserId}")
     public ResponseEntity<APIResponse> getRecentLeaveApplication(@PathVariable Long StudentUserId){
         LeaveApplyResponse leaveApplyResponse = parentService.getRecentLeaveApplication(StudentUserId);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        apiResponse.setData(leaveApplyResponse);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @GetMapping("/all/{StudentUserId}")
+    public ResponseEntity<APIResponse> getAllLeaveList(@PathVariable Long StudentUserId){
+        List<ParentLeaveDataResponse> leaveApplyResponse = parentService.getAllLeaveList(StudentUserId);
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData(leaveApplyResponse);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

@@ -10,6 +10,8 @@ import com.restapi.response.ParentResponse;
 import com.restapi.response.admin.AdminAssignmentResponse;
 import com.restapi.response.leave.LeaveApplyResponse;
 import com.restapi.response.leave.LeaveReasonResponse;
+import com.restapi.response.leave.ParentLeaveDataResponse;
+import com.restapi.response.teacher.TeacherLeaveDataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -91,23 +93,25 @@ public class ParentService {
         Role parentRole = roleRepository.findById(2)
                 .orElseThrow(() -> new ResourceNotFoundException("roleId", "roleId", 2));
 
-        StudentStatus studentStatus = studentStatusRepository.findById(1l)
+        StudentStatus studentStatus = studentStatusRepository.findById(1L)
                 .orElseThrow(() -> new ResourceNotFoundException("statusId", "statusId", 1));
 
-        ClassRoom classRoom = classRoomRepository.findByStandardId(parentRequest.getClassId())
-                .orElseThrow(() -> new ResourceNotFoundException("classId", "classId", parentRequest.getClassId()));
+        Optional<ClassRoom> classRoom = classRoomRepository.findByClassId(parentRequest.getClassId());
 
-        AppUser parentAppUser = userRepository.save(authDto.setParentAuth(parentRole, parentRequest));
+        if(classRoom.isPresent()){
+            AppUser parentAppUser = userRepository.save(authDto.setParentAuth(parentRole, parentRequest));
 
-        AppUser studentAppUser = userRepository.save(authDto.setStudentAuth(studentRole, parentRequest));
+            AppUser studentAppUser = userRepository.save(authDto.setStudentAuth(studentRole, parentRequest));
 
-        Address parentAddress = addressRepository.save(addressDto.setParentAddress(parentRequest));
+            Address parentAddress = addressRepository.save(addressDto.setParentAddress(parentRequest));
 
-        Student student = studentRepository.save(studentDto.setStudentDetails(classRoom, studentStatus, studentAppUser, parentRequest));
+            Student student = studentRepository.save(studentDto.setStudentDetails(classRoom.get(), studentStatus, studentAppUser, parentRequest));
 
-        Parent parent = parentRepository.save(parentDto.setParentDetails(parentAppUser, studentAppUser, parentAddress, parentRequest));
+            Parent parent = parentRepository.save(parentDto.setParentDetails(parentAppUser, studentAppUser, parentAddress, parentRequest));
 
-        return parentDto.responseConversion(parent);
+            return parentDto.responseConversion(parent);
+        }
+        return null;
     }
 
     public File getFile(Long id) {
@@ -189,5 +193,17 @@ public class ParentService {
             leaveApplyResponse.setLeaveStatus(leaveApplication.getLeaveStatus().getLeaveStatus());
         }
         return leaveApplyResponse;
+    }
+
+    public List<ParentLeaveDataResponse> getAllLeaveList(Long studentUserId) {
+        List<ParentLeaveDataResponse> parentLeaveDataResponseList = new ArrayList<>();
+        Optional<Student> optionalStudent = studentRepository.findByUserId(studentUserId);
+        if(optionalStudent.isPresent()){
+            Optional<List<LeaveApplication>> optionalLeaveApplicationList = leaveApplicationRepository.findByStudentId(optionalStudent.get().studentUser.getId());
+            for(LeaveApplication leaveApplication :optionalLeaveApplicationList.get()){
+                parentLeaveDataResponseList.add(parentDto.mapToParentLeaveDataResponse(leaveApplication,optionalStudent.get()));
+            }
+        }
+        return parentLeaveDataResponseList;
     }
 }

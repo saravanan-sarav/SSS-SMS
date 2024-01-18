@@ -22,4 +22,7 @@ public interface ClassRoomRepository extends JpaRepository<ClassRoom, Long> {
 
     @Query("SELECT c FROM ClassRoom c")
     Optional<List<ClassRoom>> findClassRoomAll();
+
+    @Query("SELECT c FROM ClassRoom c WHERE c.id=?1")
+    Optional<ClassRoom> findByClassId(Long classId);
 }

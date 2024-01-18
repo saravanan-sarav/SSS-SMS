@@ -1,16 +1,16 @@
 package com.restapi.dto;
 
-import com.restapi.model.Address;
-import com.restapi.model.AppUser;
-import com.restapi.model.Parent;
-import com.restapi.model.Student;
+import com.restapi.model.*;
 import com.restapi.repository.ParentRepository;
 import com.restapi.request.ParentRequest;
 import com.restapi.response.ParentResponse;
 import com.restapi.response.admin.AdminParentResponse;
+import com.restapi.response.leave.ParentLeaveDataResponse;
+import com.restapi.response.teacher.TeacherLeaveDataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -69,5 +69,24 @@ public class ParentDto {
         adminParentResponse.setDateOfJoin(student.getDateOfJoin());
         adminParentResponse.setStudentStatus(student.getStudentStatus().getStatus());
         return adminParentResponse;
+    }
+
+    public ParentLeaveDataResponse mapToParentLeaveDataResponse(LeaveApplication leaveApplication,Student student) {
+        ParentLeaveDataResponse parentLeaveDataResponse = new ParentLeaveDataResponse();
+        parentLeaveDataResponse.setId(leaveApplication.getId());
+        parentLeaveDataResponse.setFirstName(student.getFirstName());
+        parentLeaveDataResponse.setLastName(student.getLastname());
+        parentLeaveDataResponse.setLeaveTypeId(leaveApplication.getLeaveType().getId());
+        parentLeaveDataResponse.setLeaveType(leaveApplication.getLeaveType().getLeaveType());
+        parentLeaveDataResponse.setAppliedDate(LocalDate.from(leaveApplication.getApplyDate()));
+        parentLeaveDataResponse.setFromDate(leaveApplication.getFromDate());
+        parentLeaveDataResponse.setToDate(leaveApplication.getToDate());
+        parentLeaveDataResponse.setFromTime(leaveApplication.getFromTime());
+        parentLeaveDataResponse.setToTime(leaveApplication.getToTime());
+        parentLeaveDataResponse.setLeaveReason(leaveApplication.getLeaveReason().getReason());
+        parentLeaveDataResponse.setComments(leaveApplication.getComments());
+        parentLeaveDataResponse.setLeaveStatusId(leaveApplication.getLeaveStatus().getId());
+        parentLeaveDataResponse.setLeaveStatus(leaveApplication.getLeaveStatus().getLeaveStatus());
+        return parentLeaveDataResponse;
     }
 }

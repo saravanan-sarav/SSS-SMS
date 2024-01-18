@@ -77,4 +77,11 @@ public class TeacherController {
         apiResponse.setStatus(HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+    @PostMapping("/leave/status")
+    public ResponseEntity<APIResponse> teacherLeaveStatusUpdate(@RequestBody TeacherLeaveStatusUpdate teacherLeaveStatusUpdate){
+        Integer value  = teacherService.teacherLeaveStatusUpdate(teacherLeaveStatusUpdate);
+        apiResponse.setData(value);
+        apiResponse.setStatus(HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 }

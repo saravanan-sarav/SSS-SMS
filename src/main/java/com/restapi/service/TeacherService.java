@@ -47,6 +47,8 @@ public class TeacherService {
 
     @Autowired
     private LeaveApplicationRepository leaveApplicationRepository;
+    @Autowired
+    private LeaveStatusRepository leaveStatusRepository;
 
     public TeacherProfileResponse findById(Long id) {
         Optional<Teacher> teacher = teacherRepository.findByUserId(id);
@@ -153,6 +155,20 @@ public class TeacherService {
             return teacherLeaveDataResponseList;
         } else {
             return null;
+        }
+    }
+
+    public Integer teacherLeaveStatusUpdate(TeacherLeaveStatusUpdate teacherLeaveStatusUpdate) {
+        Optional<LeaveApplication> optionalLeaveApplication = leaveApplicationRepository.findById(teacherLeaveStatusUpdate.getId());
+        Optional<LeaveStatus> optionalLeaveStatus = leaveStatusRepository.findById(teacherLeaveStatusUpdate.getStatusId());
+        if(optionalLeaveApplication.isPresent()&& optionalLeaveStatus.isPresent()){
+            LeaveApplication leaveApplication = optionalLeaveApplication.get();
+            leaveApplication.setLeaveStatus(optionalLeaveStatus.get());
+            leaveApplication = leaveApplicationRepository.save(leaveApplication);
+            return 1;
+        }
+        else {
+            return 0;
         }
     }
 }
