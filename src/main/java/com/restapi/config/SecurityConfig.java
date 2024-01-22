@@ -60,6 +60,8 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/api/classroom/all")
                 .permitAll()
+                .antMatchers("/api/email/login/alert")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().httpBasic()
